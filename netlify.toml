@@ -1,0 +1,32 @@
+[build]
+  publish = "public"
+  command = ""
+
+# Send the bare domain to the sign-in page.
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# The workbook holds trainee answers — never let a proxy or CDN cache it.
+[[headers]]
+  for = "/book.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/dashboard.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"

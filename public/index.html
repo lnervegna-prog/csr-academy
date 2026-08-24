@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in — Service Professionals CSR Academy</title>
+<link rel="stylesheet" href="assets/sp-brand.css">
+<style>
+  body{min-height:100vh;display:grid;place-items:center;padding:1.25rem}
+  .wrap{width:100%;max-width:23rem}
+  .crest{text-align:center;margin-bottom:1.4rem}
+  .crest .crest-mark{justify-content:center;font-size:1.35rem}
+  .crest .eyebrow{margin-top:.5rem;color:var(--ink-faint)}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:13px;
+        box-shadow:var(--shadow);padding:1.5rem 1.4rem}
+  .card > form{display:grid;gap:.9rem}
+  h1{font-size:1.12rem;font-weight:800;letter-spacing:-.015em;color:var(--navy)}
+  .sub{font-size:.9rem;color:var(--ink-soft);margin-top:.2rem}
+  .row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+  .row .spacer{flex:1}
+  .link{background:none;border:0;padding:0;font-family:var(--sans);font-size:.76rem;
+        color:var(--cyan-ink);text-decoration:underline}
+  .foot{margin-top:1rem;text-align:center;font-family:var(--sans);font-size:.7rem;color:var(--ink-faint);line-height:1.5}
+  .pane[hidden]{display:none}
+
+  /* Google is the path everyone takes; it gets the whole width. */
+  .gbtn{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;
+        margin-top:1.1rem;padding:.7rem .95rem;border-radius:9px;
+        background:var(--card);border:1px solid var(--rule);
+        font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--ink)}
+  .gbtn:hover{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-wash)}
+  .gbtn[disabled]{opacity:.55;cursor:not-allowed}
+  .gbtn svg{width:1.05rem;height:1.05rem;flex:none}
+
+  .or{display:flex;align-items:center;gap:.6rem;margin:1.1rem 0 .2rem;
+      font-family:var(--sans);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--rule)}
+  .fallback[hidden]{display:none}
+  .busy{display:grid;gap:.5rem;place-items:center;padding:1.6rem 0;text-align:center}
+  .busy .sub{margin:0}
+  .spin{width:1.3rem;height:1.3rem;border-radius:50%;border:2px solid var(--rule);
+        border-top-color:var(--cyan);animation:sp .8s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+
+  /* local mode */
+  .who-list{display:grid;gap:.4rem;margin-top:1rem}
+  .who-btn{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;
+           padding:.6rem .8rem;border-radius:9px;background:var(--card);border:1px solid var(--rule);
+           font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--ink)}
+  .who-btn:hover{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-wash)}
+  .who-btn .tag{margin-left:auto;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+                font-weight:700;color:var(--ink-faint)}
+  .who-btn .tag.mgr{color:var(--orange-ink)}
+  .addbox{display:grid;gap:.7rem;margin-top:.3rem}
+  .addbox .row2{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:end}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crest">
+    <div class="crest-mark"><b>Service</b><span>Professionals</span></div>
+    <div class="eyebrow">CSR Academy</div>
+  </div>
+
+  <div class="card">
+    <!-- coming back from Google, or checking an existing session -->
+    <div class="pane" id="paneBusy">
+      <div class="busy">
+        <div class="spin" aria-hidden="true"></div>
+        <p class="sub" id="busyText">Signing you in…</p>
+      </div>
+    </div>
+
+    <!-- local mode: say who you are. No password, because there is nothing
+         here a person holding this laptop doesn't already have. -->
+    <div class="pane" id="paneLocal" hidden>
+      <h1 id="localTitle">Who&rsquo;s using this computer?</h1>
+      <p class="sub" id="localSub">Everything saves in this browser, on this machine.</p>
+
+      <div class="msg info" style="margin-top:1rem;font-size:.76rem">
+        <b>Local mode.</b> Nothing leaves this computer and nothing is shared.
+        Progress won&rsquo;t follow anyone to another machine until the hosted
+        phase. Export from the dashboard before you clear browser data.
+      </div>
+
+      <div class="msg err" id="errLocal" hidden style="margin-top:.7rem"></div>
+
+      <div class="who-list" id="whoList"></div>
+
+      <div class="or" id="addDivider">or add someone</div>
+      <form class="addbox" id="formAdd">
+        <div class="row2">
+          <div class="field">
+            <label for="newName">Name</label>
+            <input id="newName" type="text" autocomplete="off" required placeholder="First Last">
+          </div>
+          <div class="field">
+            <label for="newRole">Role</label>
+            <select id="newRole">
+              <option value="rep">Rep</option>
+              <option value="manager">Manager</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn primary" id="btnAdd">Add them</button>
+      </form>
+    </div>
+
+    <!-- sign in -->
+    <div class="pane" id="paneSignIn" hidden>
+      <h1>Sign in</h1>
+      <p class="sub">Your workbook saves to your account, so you can pick up where you left off on any computer.</p>
+
+      <div class="msg err" id="errTop" hidden style="margin-top:1rem"></div>
+
+      <button type="button" class="gbtn" id="btnGoogle">
+        <svg viewBox="0 0 18 18" aria-hidden="true">
+          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/>
+          <path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3-2.33z"/>
+          <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/>
+        </svg>
+        Sign in with Google
+      </button>
+      <p class="sub" style="margin-top:.55rem;font-size:.78rem;text-align:center">
+        Use your <b>@service-professionals.com</b> account.
+      </p>
+
+      <div class="or">or</div>
+      <div class="row" style="justify-content:center">
+        <button type="button" class="link" id="toEmail">Sign in with email and password instead</button>
+      </div>
+
+      <div class="fallback" id="fallback" hidden>
+        <form id="formSignIn" style="margin-top:1rem">
+          <div class="msg err" id="errSignIn" hidden></div>
+          <div class="field">
+            <label for="email">Work email</label>
+            <input id="email" type="email" autocomplete="username" required>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" autocomplete="current-password" required>
+          </div>
+          <div class="row">
+            <button type="submit" class="btn primary" id="btnSignIn">Sign in</button>
+            <span class="spacer"></span>
+            <button type="button" class="link" id="toReset">Forgot password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- request a reset -->
+    <div class="pane" id="paneReset" hidden>
+      <h1>Reset your password</h1>
+      <p class="sub">We&rsquo;ll email you a link to set a new one. This is only for email sign-in &mdash; Google accounts don&rsquo;t have a password here.</p>
+      <form id="formReset" style="margin-top:1.1rem">
+        <div class="msg err" id="errReset" hidden></div>
+        <div class="msg ok" id="okReset" hidden></div>
+        <div class="field">
+          <label for="resetEmail">Work email</label>
+          <input id="resetEmail" type="email" autocomplete="username" required>
+        </div>
+        <div class="row">
+          <button type="submit" class="btn primary" id="btnReset">Send the link</button>
+          <span class="spacer"></span>
+          <button type="button" class="link" id="backToSignIn">Back to sign in</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- set a new password (arrived from the emailed link) -->
+    <div class="pane" id="paneNew" hidden>
+      <h1>Choose a new password</h1>
+      <p class="sub">At least 10 characters. Use something you don&rsquo;t use anywhere else.</p>
+      <form id="formNew" style="margin-top:1.1rem">
+        <div class="msg err" id="errNew" hidden></div>
+        <div class="field">
+          <label for="newPassword">New password</label>
+          <input id="newPassword" type="password" autocomplete="new-password" minlength="10" required>
+        </div>
+        <div class="field">
+          <label for="newPassword2">Type it again</label>
+          <input id="newPassword2" type="password" autocomplete="new-password" minlength="10" required>
+        </div>
+        <button type="submit" class="btn primary" id="btnNew">Save and continue</button>
+      </form>
+    </div>
+  </div>
+
+  <p class="foot">Trouble signing in? Ask Lauren.<br>Nobody here ever needs to hand out a password.</p>
+</div>
+
+<script src="assets/sp-config.js"></script>
+<script src="assets/sp-api.js"></script>
+<script src="assets/sp-local.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var PANES = ["paneBusy", "paneLocal", "paneSignIn", "paneReset", "paneNew"];
+  var local = !!(window.SP && SP.isLocal && SP.isLocal());
+
+  function pane(name) {
+    PANES.forEach(function (p) { $(p).hidden = (p !== name); });
+  }
+  function show(el, text) { el.textContent = text; el.hidden = false; }
+  function hide(el) { el.hidden = true; }
+
+  function land() {
+    /* managers go to the dashboard, reps go to the book */
+    location.href = SP.isManager() ? "dashboard.html" : "book.html";
+  }
+
+  function toSignIn(message) {
+    pane("paneSignIn");
+    if (message) show($("errTop"), message); else hide($("errTop"));
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  if (!SP.configured()) {
+    /* Only reachable if assets/sp-local.js failed to load. */
+    toSignIn("Something didn't load — assets/sp-local.js is missing. Reload the page.");
+    $("btnGoogle").disabled = true;
+    $("btnSignIn").disabled = true;
+    return;
+  }
+
+  /* ================================ local =============================== */
+  if (local) {
+    var firstRun = false;
+
+    function renderWho() {
+      return SP.listPeople().then(function (people) {
+        firstRun = !people.length;
+        $("localTitle").textContent = firstRun ? "Set up this computer" : "Who’s using this computer?";
+        $("localSub").textContent = firstRun
+          ? "Add yourself first. Make yourself a manager — that's what opens the dashboard."
+          : "Everything saves in this browser, on this machine.";
+        $("whoList").innerHTML = people.map(function (p) {
+          return '<button type="button" class="who-btn" data-who="' + esc(p.id) + '">' +
+            esc(p.full_name || "(no name)") +
+            '<span class="tag' + (p.role === "manager" ? " mgr" : "") + '">' +
+            esc(p.role) + "</span></button>";
+        }).join("");
+        $("addDivider").hidden = firstRun;
+        $("newRole").value = firstRun ? "manager" : "rep";
+        pane("paneLocal");
+      });
+    }
+
+    $("whoList").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-who]");
+      if (!b) return;
+      hide($("errLocal"));
+      b.disabled = true;
+      SP.signInAs(b.dataset.who).then(land, function (err) {
+        b.disabled = false;
+        show($("errLocal"), err.message);
+      });
+    });
+
+    $("formAdd").addEventListener("submit", function (e) {
+      e.preventDefault();
+      hide($("errLocal"));
+      var name = $("newName").value.trim();
+      if (!name) return;
+      var wasFirst = firstRun;
+      $("btnAdd").disabled = true;
+      SP.createPerson(name, $("newRole").value).then(function (p) {
+        $("btnAdd").disabled = false;
+        $("newName").value = "";
+        /* Setting up for the first time? That person is you — go straight in.
+           Adding the rest of the team? Stay here and keep adding. */
+        if (wasFirst) return SP.signInAs(p.id).then(land);
+        return renderWho();
+      }, function (err) {
+        $("btnAdd").disabled = false;
+        show($("errLocal"), err.message);
+      });
+    });
+
+    if (SP.signedIn()) {
+      pane("paneBusy");
+      $("busyText").textContent = "Opening your book…";
+      SP.loadProfile().then(function (p) {
+        if (p) { land(); return; }
+        return SP.signOut().then(renderWho);
+      }, renderWho);
+    } else {
+      renderWho();
+    }
+    return;
+  }
+
+  /* ---- boot: work out what kind of visit this is ----
+     A password-reset link is the ONLY thing that gets the new-password screen.
+     Google's callback also carries tokens, and used to be mistaken for one. */
+  SP.finishSignIn().then(function (r) {
+    if (r.kind === "recovery") { pane("paneNew"); return; }
+    if (r.kind === "error")    { toSignIn(r.message); return; }
+    if (r.kind === "signedin" || SP.signedIn()) {
+      $("busyText").textContent = r.kind === "signedin" ? "Signing you in…" : "Checking your session…";
+      pane("paneBusy");
+      SP.loadProfile().then(function (p) {
+        if (!p) { toSignIn("Your account exists but has no profile yet. Tell Lauren."); return; }
+        land();
+      }, function (err) {
+        SP.signOut();
+        toSignIn(/not signed in|jwt|token/i.test(err.message || "") ? "" : err.message);
+      });
+      return;
+    }
+    toSignIn();
+  });
+
+  /* ---- Google ---- */
+  $("btnGoogle").addEventListener("click", function () {
+    hide($("errTop"));
+    this.disabled = true;
+    SP.signInWithGoogle().catch(function (err) {
+      $("btnGoogle").disabled = false;
+      show($("errTop"), err.message);
+    });
+  });
+
+  /* ---- email fallback ---- */
+  $("toEmail").addEventListener("click", function () {
+    var f = $("fallback");
+    f.hidden = !f.hidden;
+    this.textContent = f.hidden ? "Sign in with email and password instead" : "Hide email sign-in";
+    if (!f.hidden) $("email").focus();
+  });
+
+  $("formSignIn").addEventListener("submit", function (e) {
+    e.preventDefault();
+    hide($("errSignIn"));
+    $("btnSignIn").disabled = true;
+    $("btnSignIn").textContent = "Signing in…";
+    SP.signIn($("email").value, $("password").value).then(land, function (err) {
+      $("btnSignIn").disabled = false;
+      $("btnSignIn").textContent = "Sign in";
+      var m = /invalid login/i.test(err.message)
+        ? "That email and password don't match. Check for caps lock, or use Sign in with Google."
+        : err.message;
+      show($("errSignIn"), m);
+    });
+  });
+
+  $("toReset").addEventListener("click", function () {
+    $("resetEmail").value = $("email").value;
+    pane("paneReset");
+  });
+  $("backToSignIn").addEventListener("click", function () {
+    pane("paneSignIn");
+    $("fallback").hidden = false;
+    $("toEmail").textContent = "Hide email sign-in";
+  });
+
+  $("formReset").addEventListener("submit", function (e) {
+    e.preventDefault();
+    hide($("errReset")); hide($("okReset"));
+    $("btnReset").disabled = true;
+    SP.requestPasswordReset($("resetEmail").value).then(function () {
+      $("btnReset").disabled = false;
+      show($("okReset"), "Check your email for the reset link. It can take a minute to arrive.");
+    }, function (err) {
+      $("btnReset").disabled = false;
+      show($("errReset"), err.message);
+    });
+  });
+
+  $("formNew").addEventListener("submit", function (e) {
+    e.preventDefault();
+    hide($("errNew"));
+    if ($("newPassword").value !== $("newPassword2").value) {
+      show($("errNew"), "Those two passwords don't match.");
+      return;
+    }
+    $("btnNew").disabled = true;
+    SP.setPassword($("newPassword").value).then(function () {
+      return SP.loadProfile();
+    }).then(land, function (err) {
+      $("btnNew").disabled = false;
+      show($("errNew"), err.message);
+    });
+  });
+})();
+</script>
+</body>
+</html>

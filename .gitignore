@@ -1,0 +1,16 @@
+.DS_Store
+Thumbs.db
+.netlify/
+node_modules/
+*.log
+
+# Google Drive sync leftovers — this folder lives on G:
+desktop.ini
+*.gdoc
+*.gsheet
+~$*
+
+# Backups exported from the dashboard. These hold real rep answers and
+# reflections; they belong in Drive, not in a repo the whole team can read.
+sp-academy-local-*.json
+sp-academy-progress-*.csv

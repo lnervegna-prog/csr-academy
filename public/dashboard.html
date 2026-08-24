@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Academy Dashboard — Service Professionals</title>
+<link rel="stylesheet" href="assets/sp-brand.css">
+<style>
+  .top{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding:.85rem 1.5rem;
+       background:var(--navy-deep);color:#DDE6F2}
+  .top .crest-mark{font-size:1.02rem}
+  .top .crest-mark b{color:#fff}
+  .top .eyebrow{color:#8FA6C6;margin-left:.4rem}
+  .top .spacer{flex:1}
+  .top .who{font-family:var(--sans);font-size:.72rem;color:#8FA6C6}
+  .top button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#C9D8EA;
+              border-radius:7px;padding:.35rem .7rem;font-family:var(--sans);font-size:.72rem}
+  .top button:hover{background:rgba(255,255,255,.18);color:#fff}
+
+  .tabs{display:flex;gap:.3rem;padding:0 1.5rem;background:var(--navy-deep)}
+  .tabs button{background:none;border:0;border-bottom:2.5px solid transparent;color:#8FA6C6;
+               font-family:var(--sans);font-size:.76rem;font-weight:600;letter-spacing:.04em;
+               padding:.55rem .8rem;border-radius:0}
+  .tabs button:hover{color:#fff}
+  .tabs button[aria-selected="true"]{color:#fff;border-bottom-color:var(--cyan)}
+
+  main{padding:1.5rem;max-width:82rem;margin:0 auto}
+  h1{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;color:var(--navy)}
+  h2{font-size:1.05rem;font-weight:800;letter-spacing:-.015em;color:var(--navy)}
+  .sub{color:var(--ink-soft);font-size:.95rem;margin-top:.2rem}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:.7rem;margin-top:1.2rem}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:11px;padding:.85rem .95rem}
+  .stat .k{font-family:var(--sans);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);font-weight:700}
+  .stat .v{font-family:var(--sans);font-size:1.6rem;font-weight:800;color:var(--navy);letter-spacing:-.02em;
+           font-variant-numeric:tabular-nums;margin-top:.15rem}
+  .stat .n{font-size:.8rem;color:var(--ink-soft)}
+  .stat.alert .v{color:var(--warn)}
+
+  .panel{background:var(--card);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);
+         margin-top:1.3rem;overflow:hidden}
+  .panel > header{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;padding:.7rem .95rem;
+                  background:var(--navy-wash);border-bottom:1px solid var(--rule)}
+  .panel > header b{font-family:var(--sans);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)}
+  .panel > header .spacer{flex:1}
+  .panel > header select,.panel > header input{font-family:var(--sans);font-size:.76rem;padding:.3rem .5rem;
+         border:1px solid var(--rule);border-radius:7px;background:var(--card);color:var(--ink)}
+  .panel .note{padding:.7rem .95rem;font-size:.85rem;color:var(--ink-soft);border-top:1px solid var(--rule-soft)}
+
+  .tw{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}
+  thead th{text-align:left;font-family:var(--sans);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+           color:#fff;background:var(--navy);padding:.6rem .8rem;font-weight:700;white-space:nowrap}
+  tbody td{padding:.6rem .8rem;border-top:1px solid var(--rule-soft);vertical-align:middle}
+  tbody tr:nth-child(even){background:var(--card-2)}
+  tbody tr.clickable{cursor:pointer}
+  tbody tr.clickable:hover{background:var(--cyan-wash)}
+  td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .name{font-family:var(--sans);font-weight:600;color:var(--ink)}
+  .muted{color:var(--ink-faint);font-size:.85rem}
+
+  .meter{display:flex;align-items:center;gap:.5rem;min-width:8rem}
+  .meter .track{flex:1;height:6px;border-radius:99px;background:var(--rule);overflow:hidden;min-width:4rem}
+  .meter .track i{display:block;height:100%;background:var(--cyan)}
+  .meter .track i.low{background:var(--orange)}
+  .meter .pc{font-family:var(--sans);font-size:.76rem;font-weight:700;color:var(--navy);
+             font-variant-numeric:tabular-nums;min-width:2.4rem;text-align:right}
+
+  .pill{display:inline-block;font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.07em;
+        text-transform:uppercase;padding:.2rem .5rem;border-radius:99px;white-space:nowrap}
+  .pill.good{background:var(--good-wash);color:var(--good);border:1px solid var(--good)}
+  .pill.wait{background:var(--sand-wash);color:var(--warn);border:1px solid var(--sand)}
+  .pill.none{background:var(--rule-soft);color:var(--ink-faint);border:1px solid var(--rule)}
+  .pill.bad{background:var(--orange-wash);color:var(--orange-ink);border:1px solid var(--orange)}
+
+  /* rep detail */
+  .view{display:none}
+  .view.on{display:block}
+  .backlink{background:none;border:0;padding:0;font-family:var(--sans);font-size:.76rem;color:var(--cyan-ink);text-decoration:underline}
+
+  .days{display:grid;gap:.6rem;margin-top:1rem}
+  .day{border:1px solid var(--rule);border-radius:11px;background:var(--card);overflow:hidden}
+  .day > .dhead{display:grid;grid-template-columns:2.2rem 1fr auto auto;gap:.75rem;align-items:center;
+                width:100%;text-align:left;background:none;border:0;padding:.7rem .85rem}
+  .day > .dhead:hover{background:var(--cyan-wash)}
+  .day .dnum{font-family:var(--sans);font-size:.68rem;font-weight:800;text-align:center;padding:.25rem 0;
+             border-radius:6px;background:var(--navy-wash);color:var(--navy);font-variant-numeric:tabular-nums}
+  .day .dtitle{font-family:var(--sans);font-size:.87rem;font-weight:600}
+  .day .dtitle small{display:block;font-weight:400;font-size:.74rem;color:var(--ink-faint);letter-spacing:.02em}
+  .day .body{display:none;padding:.2rem .9rem 1rem;border-top:1px solid var(--rule-soft)}
+  .day[data-open="1"] .body{display:block}
+
+  .qa{margin-top:.85rem}
+  .qa h4,.drills h4{font-family:var(--sans);font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;
+         color:var(--orange-ink);font-weight:700;margin:1rem 0 .4rem}
+  .qa .item{padding:.45rem 0;border-bottom:1px dashed var(--rule-soft)}
+  .qa .q{font-family:var(--sans);font-size:.78rem;color:var(--ink-soft);line-height:1.4}
+  .qa .a{font-size:.97rem;margin-top:.15rem;white-space:pre-wrap}
+  .qa .checks{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.35rem}
+  .qa .checks span{font-family:var(--sans);font-size:.72rem;background:var(--good-wash);color:var(--good);
+                   border:1px solid var(--good);border-radius:99px;padding:.15rem .55rem}
+  .empty{font-size:.9rem;color:var(--ink-faint);font-style:italic;padding:.5rem 0}
+
+  .drill{border:1px solid var(--rule-soft);border-radius:9px;padding:.55rem .7rem;margin-bottom:.45rem;background:var(--card-2)}
+  .drill .dt{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;font-family:var(--sans);font-size:.82rem;font-weight:600}
+  .drill .dt .spacer{flex:1}
+  .drill .tries{margin-top:.4rem;display:grid;gap:.25rem}
+  .drill .try{font-family:var(--sans);font-size:.74rem;color:var(--ink-soft);line-height:1.45}
+  .drill .try b{color:var(--navy);font-variant-numeric:tabular-nums}
+  .drill .missed{color:var(--orange-ink)}
+
+  .signbox{margin-top:1rem;padding:.9rem;border-radius:10px;background:var(--navy-wash);border:1px solid var(--rule)}
+  .signbox h5{font-family:var(--sans);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+              color:var(--navy);font-weight:800;margin:0 0 .55rem}
+  .signbox .row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.6rem}
+  .signbox textarea{min-height:4.2em;resize:vertical}
+  .gate{display:flex;align-items:center;gap:.5rem;font-family:var(--sans);font-size:.8rem;font-weight:600;
+        background:var(--sand-wash);border:1px solid var(--sand);border-radius:8px;padding:.45rem .7rem;color:var(--ink)}
+  .signed-note{font-family:var(--sans);font-size:.72rem;color:var(--good);font-weight:600}
+
+  /* people admin */
+  .people input[type="text"],.people select,.people input[type="date"]{
+    font-family:var(--sans);font-size:.8rem;padding:.32rem .45rem;border:1px solid var(--rule);
+    border-radius:7px;background:var(--card);color:var(--ink);max-width:11rem}
+  .people tr[data-dirty="1"]{background:var(--sand-wash)}
+  .addrow{display:flex;gap:.7rem;align-items:end;flex-wrap:wrap}
+  .addrow .field{min-width:9rem}
+  .people .btn{padding:.32rem .6rem;font-size:.74rem}
+  .rowmsg{font-family:var(--sans);font-size:.7rem;color:var(--good);font-weight:600}
+
+  .loading{padding:2.5rem 0;text-align:center;color:var(--ink-faint);font-family:var(--sans);font-size:.85rem}
+  @media (max-width:700px){ main{padding:1rem} .top{padding:.75rem 1rem} .tabs{padding:0 1rem} }
+  @media print{
+    .top,.tabs,.backlink,.signbox .row,.panel>header{display:none}
+    .day .body{display:block !important}
+    .view{display:none !important}
+    .view.on{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="crest-mark"><b>Service</b><span>Professionals</span></div>
+  <span class="eyebrow">Academy Dashboard</span>
+  <span class="spacer"></span>
+  <span class="who" id="who"></span>
+  <button type="button" id="btnRefresh">Refresh</button>
+  <button type="button" id="btnCsv">Export CSV</button>
+  <button type="button" id="btnBackup" hidden>Back up everything</button>
+  <button type="button" id="btnRestore" hidden>Restore</button>
+  <button type="button" id="btnPrint">Print</button>
+  <button type="button" id="btnOut">Sign out</button>
+  <input type="file" id="restoreFile" accept="application/json,.json" hidden>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button type="button" data-tab="roster" aria-selected="true">Team progress</button>
+  <button type="button" data-tab="analysis" aria-selected="false">What the team fails</button>
+  <button type="button" data-tab="people" aria-selected="false">People</button>
+</nav>
+
+<main>
+  <div class="msg err" id="err" hidden></div>
+  <div class="msg info" id="localBanner" hidden></div>
+  <div class="msg info" id="bookWarn" hidden></div>
+
+  <!-- ============================ roster ============================ -->
+  <section id="viewRoster" class="view on">
+    <h1>Team progress</h1>
+    <p class="sub">Every rep&rsquo;s workbook, live. Click a name to read their answers, see their drill scores, and sign off a day.</p>
+
+    <div class="cards" id="stats"></div>
+
+    <div class="panel">
+      <header>
+        <b>Reps</b>
+        <span class="spacer"></span>
+        <label class="muted" for="cohortFilter" style="font-family:var(--sans);font-size:.7rem">Cohort</label>
+        <select id="cohortFilter"><option value="">All cohorts</option></select>
+        <span class="sub" id="rosterCount"></span>
+      </header>
+      <div class="tw">
+        <table>
+          <thead><tr>
+            <th>Rep</th><th>Cohort</th><th>Progress</th><th>Days done</th><th>Signed off</th>
+            <th>Live calls</th><th>Drills</th><th>Last active</th>
+          </tr></thead>
+          <tbody id="rosterBody"><tr><td colspan="8" class="loading">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="cohortPanel" hidden>
+      <header><b>Cohort comparison</b><span class="spacer"></span>
+        <span class="sub">Later cohorts measured against the baseline group</span></header>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Cohort</th><th>Reps</th><th>Avg progress</th><th>Avg best drill score</th><th>Cleared for live calls</th></tr></thead>
+          <tbody id="cohortBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= team analysis ========================= -->
+  <section id="viewAnalysis" class="view">
+    <h1>What the team fails</h1>
+    <p class="sub">If seven of nine reps miss the same drill, that is a curriculum problem, not seven rep problems.</p>
+
+    <div class="panel">
+      <header><b>Drills, hardest first</b><span class="spacer"></span>
+        <span class="sub">Average across every attempt by every active rep</span></header>
+      <div class="tw">
+        <table>
+          <thead><tr>
+            <th>Drill</th><th>Day</th><th>Reps</th><th>Attempts</th>
+            <th>Avg score</th><th>First try</th><th>Best</th><th>Failed (&lt;80%)</th>
+          </tr></thead>
+          <tbody id="drillBody"><tr><td colspan="8" class="loading">Loading…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="note">A drill only appears once someone has completed it. Partly-answered attempts are graded on screen but not recorded.</p>
+    </div>
+
+    <div class="panel">
+      <header><b>Where the days stall</b><span class="spacer"></span>
+        <span class="sub">Average completion per day, across reps who have started it</span></header>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Day</th><th>Reps started</th><th>Marked done</th><th>Average completion</th></tr></thead>
+          <tbody id="dayBody"><tr><td colspan="4" class="loading">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= people ============================ -->
+  <section id="viewPeople" class="view">
+    <h1>People</h1>
+    <p class="sub">Roles, cohorts and who is still active. Nobody should ever need the SQL editor for this.</p>
+
+    <div class="panel people">
+      <header><b>Everyone with an account</b><span class="spacer"></span>
+        <span class="sub" id="peopleCount"></span></header>
+      <div class="tw">
+        <table>
+          <thead><tr>
+            <th>Name</th><th>Email</th><th>Role</th><th>Cohort</th><th>Started</th><th>Active</th><th></th>
+          </tr></thead>
+          <tbody id="peopleBody"><tr><td colspan="7" class="loading">Loading…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="note" id="addPersonBox" hidden>
+        <form id="formAddPerson" class="addrow">
+          <div class="field">
+            <label for="apName">Add someone</label>
+            <input id="apName" type="text" placeholder="First Last" autocomplete="off" required>
+          </div>
+          <div class="field">
+            <label for="apRole">Role</label>
+            <select id="apRole"><option value="rep">Rep</option><option value="manager">Manager</option></select>
+          </div>
+          <div class="field">
+            <label for="apCohort">Cohort</label>
+            <input id="apCohort" type="text" placeholder="Baseline 2026" autocomplete="off">
+          </div>
+          <button type="submit" class="btn primary" id="btnAddPerson">Add</button>
+        </form>
+      </div>
+      <p class="note" id="peopleNote">Accounts appear here on their own the first time someone signs in with Google. Deactivating removes
+        someone from the roster without deleting a word of their workbook.</p>
+    </div>
+  </section>
+
+  <!-- =========================== rep detail ========================== -->
+  <section id="viewDetail" class="view">
+    <button type="button" class="backlink" id="back">&larr; All reps</button>
+    <h1 id="repName" style="margin-top:.5rem"></h1>
+    <p class="sub" id="repSub"></p>
+    <div class="days" id="days"></div>
+  </section>
+</main>
+
+<iframe id="bookFrame" src="book.html?labels=1" hidden title="label source"></iframe>
+
+<script src="assets/sp-config.js"></script>
+<script src="assets/sp-api.js"></script>
+<script src="assets/sp-local.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var LABELS = null, DAYS = null, DAY_TOTALS = null, BOOK_TOTAL = 0;
+  var overview = [], people = [], current = null, cohortFilter = "";
+
+  function fail(msg) { $("err").textContent = msg; $("err").hidden = false; }
+  function clearFail() { $("err").hidden = true; }
+
+  if (!SP.configured()) { fail("Something didn't load — assets/sp-local.js is missing. Reload the page."); return; }
+  if (!SP.signedIn()) { location.href = "index.html"; return; }
+
+  var isLocal = !!(SP.isLocal && SP.isLocal());
+
+  function setTotals(t) {
+    DAY_TOTALS = t;
+    BOOK_TOTAL = Object.keys(t).reduce(function (a, d) { return a + Number(t[d] || 0); }, 0);
+  }
+
+  /* Second source for the same information, written by the book on every load.
+     Off the disk, file:// pages are mutually opaque and the iframe below can
+     never be read — this is what makes day titles and true percentages work
+     locally. Hosted, it is a harmless backstop. */
+  function fromCache() {
+    try {
+      var c = JSON.parse(localStorage.getItem("sp.academy.bookshape.v1") || "null");
+      if (!c) return;
+      if (!LABELS && c.labels) LABELS = c.labels;
+      if (!DAYS && c.days) DAYS = c.days;
+      if (!DAY_TOTALS && c.totals) setTotals(c.totals);
+    } catch (e) { /* nothing cached; the dashboard degrades but still works */ }
+  }
+
+  /* ---- pull labels and field counts straight out of the book, so neither can
+          drift out of sync with the curriculum ---- */
+  function labelsReady() {
+    return new Promise(function (resolve) {
+      var f = $("bookFrame"), done = false;
+      function finish() {
+        if (done) return;
+        done = true;
+        fromCache();
+        resolve();
+      }
+      function grab() {
+        try {
+          var w = f.contentWindow;
+          if (w && typeof w.SPBookLabels === "function") {
+            LABELS = w.SPBookLabels();
+            DAYS = {};
+            [].forEach.call(w.document.querySelectorAll(".chapter"), function (ch) {
+              DAYS[ch.dataset.day] = ch.dataset.title;
+            });
+          }
+          if (w && typeof w.SPBookTotals === "function") setTotals(w.SPBookTotals());
+        } catch (e) { /* cross-origin, or not loaded — fromCache() covers it */ }
+        finish();
+      }
+      if (f.contentDocument && f.contentDocument.readyState === "complete") grab();
+      else f.addEventListener("load", grab, { once: true });
+      setTimeout(finish, 6000); /* never block the dashboard on this */
+    });
+  }
+
+  function labelOf(key) { var m = LABELS && LABELS[key]; return m ? m.label : key; }
+  function sectionOf(key) { var m = LABELS && LABELS[key]; return m ? (m.sectionName || m.section) : "Other"; }
+  function isCheck(key) { var m = LABELS && LABELS[key]; return m ? m.type === "check" : false; }
+  function dayTitle(d) { return (DAYS && DAYS[d]) || ("Day " + d); }
+  /* Comes from the book itself. No fallback number — a hard-coded day count
+     goes stale the moment days are added, and a wrong denominator on the
+     roster is worse than none. */
+  function dayCount() { return Object.keys(DAYS || {}).length; }
+
+  /* Percent of the WHOLE book, not of the days the rep happens to have opened. */
+  function pctOf(r) {
+    if (BOOK_TOTAL) return Math.round(100 * Number(r.filled || 0) / BOOK_TOTAL);
+    return Number(r.pct || 0);
+  }
+
+  function ago(iso) {
+    if (!iso) return "—";
+    var d = new Date(iso), mins = Math.round((Date.now() - d) / 60000);
+    if (mins < 2) return "just now";
+    if (mins < 60) return mins + " min ago";
+    if (mins < 60 * 24) return Math.round(mins / 60) + "h ago";
+    var days = Math.round(mins / 1440);
+    if (days < 8) return days + "d ago";
+    return d.toLocaleDateString();
+  }
+  function meter(pct) {
+    return '<span class="meter"><span class="track"><i class="' + (pct < 40 ? "low" : "") +
+           '" style="width:' + pct + '%"></i></span><span class="pc">' + pct + '%</span></span>';
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function stat(k, v, n, alert) {
+    return '<div class="stat' + (alert ? " alert" : "") + '"><div class="k">' + k +
+           '</div><div class="v">' + v + '</div><div class="n">' + n + "</div></div>";
+  }
+  function pctCell(v) {
+    return v == null || v === "" ? '<td class="num muted">—</td>' : '<td class="num">' + v + "%</td>";
+  }
+
+  /* ---- tabs ---- */
+  function showView(name) {
+    ["Roster", "Analysis", "People", "Detail"].forEach(function (v) {
+      $("view" + v).classList.toggle("on", v.toLowerCase() === name);
+    });
+    [].forEach.call($("tabs").children, function (b) {
+      b.setAttribute("aria-selected", b.dataset.tab === name ? "true" : "false");
+    });
+    if (name === "analysis") loadAnalysis();
+    if (name === "people") loadPeople();
+  }
+  $("tabs").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-tab]");
+    if (b) showView(b.dataset.tab);
+  });
+
+  /* ============================== roster ============================== */
+  var NO_COHORT = "__none__";   /* a value no real cohort name can collide with */
+
+  function filtered() {
+    if (!cohortFilter) return overview;
+    if (cohortFilter === NO_COHORT) return overview.filter(function (r) { return !r.cohort; });
+    return overview.filter(function (r) { return (r.cohort || "") === cohortFilter; });
+  }
+  function cohortLabel() {
+    if (!cohortFilter) return "all cohorts";
+    return cohortFilter === NO_COHORT ? "no cohort set" : cohortFilter;
+  }
+
+  function renderCohortFilter() {
+    var names = {}, sel = $("cohortFilter");
+    overview.forEach(function (r) { if (r.cohort) names[r.cohort] = true; });
+    var list = Object.keys(names).sort();
+    sel.innerHTML = '<option value="">All cohorts</option>' +
+      list.map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + "</option>"; }).join("") +
+      (overview.some(function (r) { return !r.cohort; })
+        ? '<option value="__none__">(no cohort set)</option>' : "");
+    sel.value = cohortFilter;
+    $("cohortPanel").hidden = list.length < 2;
+    if (list.length >= 2) renderCohorts(list);
+  }
+
+  function renderCohorts(list) {
+    $("cohortBody").innerHTML = list.map(function (c) {
+      var rows = overview.filter(function (r) { return r.cohort === c; });
+      var avg = Math.round(rows.reduce(function (a, r) { return a + pctOf(r); }, 0) / rows.length);
+      var withDrills = rows.filter(function (r) { return r.avg_best_pct != null; });
+      var drills = withDrills.length
+        ? Math.round(withDrills.reduce(function (a, r) { return a + Number(r.avg_best_pct); }, 0) / withDrills.length)
+        : null;
+      var cleared = rows.filter(function (r) { return r.cleared_for_live_calls; }).length;
+      return "<tr><td class=\"name\">" + esc(c) + "</td>" +
+        '<td class="num">' + rows.length + "</td>" +
+        "<td>" + meter(avg) + "</td>" +
+        (drills == null ? '<td class="num muted">—</td>' : '<td class="num">' + drills + "%</td>") +
+        '<td class="num">' + cleared + " of " + rows.length + "</td></tr>";
+    }).join("");
+  }
+
+  function renderRoster() {
+    var rows = filtered();
+    var totalDays = dayCount();
+    var outOf = totalDays ? " / " + totalDays : "";
+    var avg = rows.length ? Math.round(rows.reduce(function (a, r) { return a + pctOf(r); }, 0) / rows.length) : 0;
+    var cleared = rows.filter(function (r) { return r.cleared_for_live_calls; }).length;
+    var stale = rows.filter(function (r) {
+      return !r.last_active || (Date.now() - new Date(r.last_active)) > 3 * 86400000;
+    }).length;
+
+    $("stats").innerHTML =
+      stat("Reps in the academy", rows.length, esc(cohortLabel())) +
+      stat("Average progress", avg + "%", BOOK_TOTAL ? "of the whole book" : "of the days started") +
+      stat("Cleared for live calls", cleared, "of " + rows.length) +
+      stat("Quiet 3+ days", stale, stale ? "worth a nudge" : "everyone active", stale > 0);
+
+    $("rosterCount").textContent = rows.length + (cohortFilter ? " shown" : " active");
+    if (!rows.length) {
+      $("rosterBody").innerHTML = '<tr><td colspan="8" class="empty">' +
+        (overview.length ? "Nobody in that cohort yet." :
+         isLocal ? "No reps yet. Add them on the People tab."
+                 : "No reps yet. They appear here the first time they sign in with Google.") + "</td></tr>";
+      return;
+    }
+    $("rosterBody").innerHTML = rows.map(function (r) {
+      var gate = r.cleared_for_live_calls
+        ? '<span class="pill good">Cleared</span>'
+        : (Number(r.days_signed_off) >= 5 ? '<span class="pill wait">Not yet</span>' : '<span class="pill none">Day 5 pending</span>');
+      var drills = r.drills_attempted
+        ? r.drills_attempted + (r.avg_best_pct != null ? " · " + r.avg_best_pct + "%" : "")
+        : "—";
+      return '<tr class="clickable" data-rep="' + esc(r.id) + '">' +
+        '<td class="name">' + esc(r.full_name || r.email || "(no name set)") + "</td>" +
+        '<td class="muted">' + esc(r.cohort || "—") + "</td>" +
+        "<td>" + meter(pctOf(r)) + "</td>" +
+        '<td class="num">' + (r.days_rep_done || 0) + outOf + "</td>" +
+        '<td class="num">' + (r.days_signed_off || 0) + outOf + "</td>" +
+        "<td>" + gate + "</td>" +
+        '<td class="num ' + (r.drills_attempted ? "" : "muted") + '">' + drills + "</td>" +
+        '<td class="num">' + ago(r.last_active) + "</td>" +
+        "</tr>";
+    }).join("");
+  }
+
+  $("cohortFilter").addEventListener("change", function () {
+    cohortFilter = this.value;
+    renderRoster();
+  });
+
+  /* ============================ rep detail ============================ */
+  function openRep(id) {
+    var row = overview.filter(function (r) { return r.id === id; })[0];
+    if (!row) return;
+    current = row;
+    showView("detail");
+    $("repName").textContent = row.full_name || row.email || "(no name set)";
+    $("repSub").textContent = pctOf(row) + "% of the workbook filled in" +
+      (row.cohort ? " · " + row.cohort : "") + " · last active " + ago(row.last_active);
+    $("days").innerHTML = '<div class="loading">Loading workbook…</div>';
+
+    Promise.all([SP.loadRepProgress(id), SP.loadSignoffs(id), SP.loadDrillAttempts(id)]).then(function (res) {
+      renderDays(res[0] || [], res[1] || [], res[2] || []);
+    }, function (e) { fail(e.message); });
+  }
+
+  function renderDays(progress, signoffs, attempts) {
+    var byDay = {}, signByDay = {}, drillsByDay = {};
+    progress.forEach(function (p) { byDay[p.day] = p; });
+    signoffs.forEach(function (s) { signByDay[s.day] = s; });
+    attempts.forEach(function (a) {
+      (drillsByDay[a.day] = drillsByDay[a.day] || {});
+      (drillsByDay[a.day][a.drill_id] = drillsByDay[a.day][a.drill_id] || []).push(a);
+    });
+
+    var dayNums = Object.keys(DAYS || {}).map(Number).sort(function (a, b) { return a - b; });
+    if (!dayNums.length) dayNums = progress.map(function (p) { return p.day; });
+
+    $("days").innerHTML = dayNums.map(function (d) {
+      var p = byDay[d], s = signByDay[d];
+      var total = (DAY_TOTALS && DAY_TOTALS[d]) || (p && p.total) || 0;
+      var pct = total ? Math.round(100 * ((p && p.filled) || 0) / total) : 0;
+      var badge = s ? '<span class="pill good">Signed off</span>'
+                    : (p && p.rep_done ? '<span class="pill wait">Ready to review</span>'
+                                       : '<span class="pill none">In progress</span>');
+      return '<div class="day" data-day="' + d + '">' +
+        '<button type="button" class="dhead">' +
+          '<span class="dnum">' + (d < 10 ? "0" + d : d) + "</span>" +
+          '<span class="dtitle">' + esc(dayTitle(d)) +
+            "<small>" + (p ? p.filled + " of " + total + " fields" : "not started") + "</small></span>" +
+          "<span>" + badge + "</span>" +
+          "<span>" + meter(pct) + "</span>" +
+        "</button>" +
+        '<div class="body" data-body="' + d + '"></div>' +
+      "</div>";
+    }).join("");
+
+    $("days").querySelectorAll(".dhead").forEach(function (h) {
+      h.addEventListener("click", function () {
+        var box = h.parentElement;
+        var d = Number(box.dataset.day);
+        var open = box.dataset.open === "1";
+        box.dataset.open = open ? "0" : "1";
+        if (!open) fillDay(box, byDay[d], signByDay[d], drillsByDay[d]);
+      });
+    });
+  }
+
+  function drillHtml(byDrill) {
+    var ids = Object.keys(byDrill || {});
+    if (!ids.length) return "";
+    var html = '<div class="drills"><h4>Drill scores</h4>';
+    ids.forEach(function (id) {
+      var tries = byDrill[id].slice().sort(function (a, b) { return a.attempt_no - b.attempt_no; });
+      var best = tries.reduce(function (m, t) { return t.score / t.max_score > m.score / m.max_score ? t : m; }, tries[0]);
+      var latest = tries[tries.length - 1];
+      var bestPct = Math.round(100 * best.score / best.max_score);
+      html += '<div class="drill">' +
+        '<div class="dt">' + esc(latest.drill_title || id) +
+          '<span class="spacer"></span>' +
+          '<span class="' + (bestPct >= 80 ? "pill good" : "pill bad") + '">best ' + best.score + " / " + best.max_score + "</span>" +
+          '<span class="muted">latest ' + latest.score + " / " + latest.max_score +
+          " · " + tries.length + (tries.length === 1 ? " attempt" : " attempts") + "</span>" +
+        "</div><div class=\"tries\">";
+      tries.forEach(function (t) {
+        var wrong = (t.detail && t.detail.wrong) || [];
+        var missed = wrong.map(function (x) {
+          if (typeof x === "string") return x;
+          if (x.item) return x.item;
+          if (x.position) return "step " + x.position + " (" + x.chose + ")";
+          return "";
+        }).filter(Boolean);
+        html += '<div class="try">Attempt ' + t.attempt_no + " · <b>" + t.score + " / " + t.max_score + "</b> · " +
+          new Date(t.attempted_at).toLocaleDateString() +
+          (missed.length ? ' <span class="missed">missed: ' + esc(missed.join("; ")) + "</span>" : "") +
+          "</div>";
+      });
+      html += "</div></div>";
+    });
+    return html + "</div>";
+  }
+
+  function fillDay(box, p, s, drills) {
+    var body = box.querySelector(".body");
+    if (body.dataset.filled === "1") return;
+    body.dataset.filled = "1";
+    var day = Number(box.dataset.day);
+    var answers = (p && p.answers) || {};
+    var keys = Object.keys(answers).filter(function (k) {
+      var v = answers[k];
+      return v === true || (typeof v === "string" && v.trim());
+    });
+
+    var html = "";
+    if (!keys.length) {
+      html += '<p class="empty">Nothing written for this day yet.</p>';
+    } else {
+      /* group by the book's own section names so it reads in book order */
+      var groups = {}, order = [];
+      keys.forEach(function (k) {
+        var g = sectionOf(k);
+        if (!groups[g]) { groups[g] = { checks: [], texts: [] }; order.push(g); }
+        if (isCheck(k) || answers[k] === true) groups[g].checks.push(labelOf(k));
+        else groups[g].texts.push({ q: labelOf(k), a: answers[k] });
+      });
+      html += '<div class="qa">';
+      order.forEach(function (g) {
+        html += "<h4>" + esc(g) + "</h4>";
+        if (groups[g].checks.length) {
+          html += '<div class="checks">' + groups[g].checks.map(function (c) { return "<span>" + esc(c) + "</span>"; }).join("") + "</div>";
+        }
+        groups[g].texts.forEach(function (t) {
+          html += '<div class="item"><div class="q">' + esc(t.q) + '</div><div class="a">' + esc(t.a) + "</div></div>";
+        });
+      });
+      html += "</div>";
+    }
+
+    html += drillHtml(drills);
+
+    /* sign-off control — this is the only place a day gets signed */
+    var signed = s ? '<p class="signed-note">Signed off ' + new Date(s.signed_at).toLocaleString() + "</p>" : "";
+    html += '<div class="signbox">' +
+      "<h5>Manager sign-off" + (day === 5 ? " — live call gate" : "") + "</h5>" + signed +
+      '<div class="field"><label for="n' + day + '">Notes for this day</label>' +
+      '<textarea id="n' + day + '">' + esc(s ? s.notes : "") + "</textarea></div>" +
+      (day === 5
+        ? '<label class="gate" style="margin-top:.6rem"><input type="checkbox" id="gate5"' +
+          (s && s.ready_for_live_calls ? " checked" : "") + "> Ready to begin taking live calls</label>"
+        : "") +
+      '<div class="row"><button type="button" class="btn primary" data-sign="' + day + '">' +
+      (s ? "Update sign-off" : "Sign off Day " + day) + "</button>" +
+      '<span class="msg ok" id="sok' + day + '" hidden>Saved</span></div>' +
+    "</div>";
+
+    body.innerHTML = html;
+
+    body.querySelector("[data-sign]").addEventListener("click", function () {
+      var btn = this;
+      btn.disabled = true;
+      clearFail();
+      var notes = body.querySelector("#n" + day).value;
+      var gate = body.querySelector("#gate5");
+      SP.saveSignoff(current.id, day, notes, gate ? gate.checked : undefined).then(function () {
+        btn.disabled = false;
+        btn.textContent = "Update sign-off";
+        var ok = body.querySelector("#sok" + day);
+        ok.hidden = false;
+        setTimeout(function () { ok.hidden = true; }, 2000);
+        var badge = box.querySelector(".pill");
+        badge.className = "pill good";
+        badge.textContent = "Signed off";
+        return SP.loadOverview().then(function (rows) { overview = rows; });
+      }, function (e) { btn.disabled = false; fail(e.message); });
+    });
+  }
+
+  /* =========================== team analysis =========================== */
+  var analysisLoaded = false;
+  function loadAnalysis() {
+    if (analysisLoaded) return;
+    analysisLoaded = true;
+    SP.loadDrillDifficulty().then(function (rows) {
+      if (!rows.length) {
+        $("drillBody").innerHTML = '<tr><td colspan="8" class="empty">No drill attempts recorded yet.</td></tr>';
+        return;
+      }
+      $("drillBody").innerHTML = rows.map(function (d) {
+        return "<tr>" +
+          '<td class="name">' + esc(d.drill_title || d.drill_id) + "</td>" +
+          '<td class="num">' + d.day + "</td>" +
+          '<td class="num">' + d.reps + "</td>" +
+          '<td class="num">' + d.attempts + "</td>" +
+          "<td>" + meter(Number(d.avg_pct || 0)) + "</td>" +
+          pctCell(d.first_try_pct) +
+          pctCell(d.avg_best_pct) +
+          '<td><span class="pill ' + (Number(d.fail_rate) >= 50 ? "bad" : Number(d.fail_rate) > 0 ? "wait" : "good") +
+            '">' + d.fail_rate + "%</span></td>" +
+          "</tr>";
+      }).join("");
+    }, function (e) { $("drillBody").innerHTML = '<tr><td colspan="8" class="empty">' + esc(e.message) + "</td></tr>"; });
+
+    SP.loadDayCompletion().then(function (rows) {
+      if (!rows.length) {
+        $("dayBody").innerHTML = '<tr><td colspan="4" class="empty">Nobody has started the book yet.</td></tr>';
+        return;
+      }
+      $("dayBody").innerHTML = rows.map(function (d) {
+        return "<tr><td class=\"name\">Day " + d.day + " — " + esc(dayTitle(d.day)) + "</td>" +
+          '<td class="num">' + d.reps_started + "</td>" +
+          '<td class="num">' + d.reps_done + "</td>" +
+          "<td>" + meter(Number(d.avg_pct || 0)) + "</td></tr>";
+      }).join("");
+    }, function (e) { $("dayBody").innerHTML = '<tr><td colspan="4" class="empty">' + esc(e.message) + "</td></tr>"; });
+  }
+
+  /* ============================== people ============================== */
+  var peopleLoaded = false;
+  function loadPeople(force) {
+    if (peopleLoaded && !force) return;
+    peopleLoaded = true;
+    SP.loadPeople().then(function (rows) {
+      people = rows;
+      renderPeople();
+    }, function (e) { $("peopleBody").innerHTML = '<tr><td colspan="7" class="empty">' + esc(e.message) + "</td></tr>"; });
+  }
+
+  function renderPeople() {
+    $("peopleCount").textContent = people.filter(function (p) { return p.active; }).length + " active · " + people.length + " total";
+    if (!people.length) {
+      $("peopleBody").innerHTML = '<tr><td colspan="7" class="empty">Nobody has signed in yet.</td></tr>';
+      return;
+    }
+    $("peopleBody").innerHTML = people.map(function (p) {
+      return '<tr data-person="' + esc(p.id) + '">' +
+        '<td class="name">' + esc(p.full_name || "(no name yet)") + "</td>" +
+        '<td class="muted">' + esc(p.email) + "</td>" +
+        '<td><select data-f="role">' +
+          '<option value="rep"' + (p.role === "rep" ? " selected" : "") + ">Rep</option>" +
+          '<option value="manager"' + (p.role === "manager" ? " selected" : "") + ">Manager</option>" +
+        "</select></td>" +
+        '<td><input type="text" data-f="cohort" placeholder="Baseline 2026" value="' + esc(p.cohort || "") + '"></td>' +
+        '<td><input type="date" data-f="started_on" value="' + esc(p.started_on || "") + '"></td>' +
+        '<td><input type="checkbox" data-f="active"' + (p.active ? " checked" : "") + "></td>" +
+        '<td><button type="button" class="btn" data-save-person>Save</button> <span class="rowmsg" hidden>Saved</span></td>' +
+      "</tr>";
+    }).join("");
+  }
+
+  $("peopleBody").addEventListener("input", function (e) {
+    var tr = e.target.closest("tr[data-person]");
+    if (tr) tr.dataset.dirty = "1";
+  });
+  $("peopleBody").addEventListener("change", function (e) {
+    var tr = e.target.closest("tr[data-person]");
+    if (tr) tr.dataset.dirty = "1";
+  });
+
+  $("peopleBody").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-save-person]");
+    if (!btn) return;
+    var tr = btn.closest("tr[data-person]");
+    var id = tr.dataset.person;
+    var val = function (f) { return tr.querySelector('[data-f="' + f + '"]'); };
+    var patch = {
+      role: val("role").value,
+      cohort: val("cohort").value.trim() || null,
+      started_on: val("started_on").value || null,
+      active: val("active").checked
+    };
+
+    /* Locking yourself out of the dashboard is a one-way trip through the SQL
+       editor, so make it deliberate. */
+    if (id === SP.userId() && (patch.role !== "manager" || !patch.active)) {
+      if (!confirm("That change removes your own manager access. You would need someone with SQL access to undo it. Continue?")) return;
+    }
+
+    clearFail();
+    btn.disabled = true;
+    SP.updatePerson(id, patch).then(function () {
+      btn.disabled = false;
+      tr.dataset.dirty = "0";
+      var msg = tr.querySelector(".rowmsg");
+      msg.hidden = false;
+      setTimeout(function () { msg.hidden = true; }, 2000);
+      /* cohort and active status change the roster, so pull it fresh */
+      return SP.loadOverview().then(function (rows) {
+        overview = rows;
+        renderCohortFilter();
+        renderRoster();
+      });
+    }, function (e2) { btn.disabled = false; fail(e2.message); });
+  });
+
+  /* ================================ CSV ================================ */
+  $("btnCsv").addEventListener("click", function () {
+    var head = ["Rep", "Email", "Cohort", "Started", "Percent complete", "Fields filled", "Fields in book",
+                "Days marked done", "Days signed off", "Cleared for live calls",
+                "Drills attempted", "Average best drill score", "Last active"];
+    var rows = filtered().map(function (r) {
+      return [r.full_name, r.email, r.cohort || "", r.started_on || "", pctOf(r), r.filled,
+              BOOK_TOTAL || r.total, r.days_rep_done, r.days_signed_off,
+              r.cleared_for_live_calls ? "yes" : "no",
+              r.drills_attempted || 0, r.avg_best_pct == null ? "" : r.avg_best_pct,
+              r.last_active || ""];
+    });
+    var csv = [head].concat(rows).map(function (r) {
+      return r.map(function (c) { return '"' + String(c == null ? "" : c).replace(/"/g, '""') + '"'; }).join(",");
+    }).join("\r\n");
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "sp-academy-progress-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  });
+
+  /* ============================== chrome =============================== */
+  $("back").addEventListener("click", function () {
+    showView("roster");
+    renderRoster();
+  });
+  $("btnOut").addEventListener("click", function () {
+    SP.signOut().then(function () { location.href = "index.html"; });
+  });
+  $("btnPrint").addEventListener("click", function () { window.print(); });
+  $("btnRefresh").addEventListener("click", function () {
+    analysisLoaded = false;
+    peopleLoaded = false;
+    load();
+  });
+
+  $("rosterBody").addEventListener("click", function (e) {
+    var tr = e.target.closest("tr[data-rep]");
+    if (tr) openRep(tr.dataset.rep);
+  });
+
+  /* ============================== local mode ============================ */
+  function describeLocal() {
+    var s = SP.stats();
+    $("localBanner").innerHTML =
+      "<b>Local mode.</b> " + s.people + (s.people === 1 ? " person" : " people") + ", " +
+      s.days + (s.days === 1 ? " day record" : " day records") + " and " +
+      s.drills + (s.drills === 1 ? " drill attempt" : " drill attempts") +
+      ", all in this browser on this computer. Nothing is shared and nothing is backed up — " +
+      "use <b>Back up everything</b> before you clear browser data.";
+    $("localBanner").hidden = false;
+  }
+
+  if (isLocal) {
+    $("btnBackup").hidden = false;
+    $("btnRestore").hidden = false;
+    $("addPersonBox").hidden = false;
+    $("peopleNote").textContent =
+      "Everyone on this computer. Deactivating removes someone from the roster without " +
+      "deleting a word of their workbook.";
+
+    $("btnBackup").addEventListener("click", function () {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([SP.exportAll()], { type: "application/json" }));
+      a.download = "sp-academy-local-" + new Date().toISOString().slice(0, 10) + ".json";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    });
+
+    $("btnRestore").addEventListener("click", function () { $("restoreFile").click(); });
+
+    $("restoreFile").addEventListener("change", function () {
+      var file = this.files && this.files[0];
+      this.value = "";
+      if (!file) return;
+      var s = SP.stats();
+      /* This replaces everything, and there is no undo. */
+      if (!confirm("Restoring replaces everything on this computer — all " + s.people +
+                   " people, " + s.days + " day records and " + s.drills +
+                   " drill attempts. That cannot be undone.\n\nBack up first if you haven't. Continue?")) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        SP.importAll(String(reader.result)).then(function (n) {
+          alert("Restored " + n + " people. Sign in again to continue.");
+          location.href = "index.html";
+        }, function (e) { fail(e.message); });
+      };
+      reader.onerror = function () { fail("Couldn't read that file."); };
+      reader.readAsText(file);
+    });
+
+    $("formAddPerson").addEventListener("submit", function (e) {
+      e.preventDefault();
+      clearFail();
+      var name = $("apName").value.trim();
+      if (!name) return;
+      var role = $("apRole").value;
+      var cohort = $("apCohort").value.trim();
+      $("btnAddPerson").disabled = true;
+      SP.createPerson(name, role).then(function (p) {
+        return cohort ? SP.updatePerson(p.id, { cohort: cohort }) : true;
+      }).then(function () {
+        $("btnAddPerson").disabled = false;
+        $("apName").value = "";
+        /* keep the cohort — adding a whole intake means typing it once */
+        return SP.loadPeople().then(function (rows) {
+          people = rows;
+          renderPeople();
+          return SP.loadOverview();
+        }).then(function (rows) {
+          overview = rows;
+          renderCohortFilter();
+          renderRoster();
+          describeLocal();
+        });
+      }, function (err) { $("btnAddPerson").disabled = false; fail(err.message); });
+    });
+  }
+
+  /* ================================ boot =============================== */
+  function load() {
+    clearFail();
+    return SP.loadProfile().then(function (p) {
+      $("who").textContent = (p && p.full_name) || (p && p.email) || "";
+      if (!SP.isManager()) { location.href = "book.html"; return null; }
+      return SP.loadOverview();
+    }).then(function (rows) {
+      if (!rows) return;
+      overview = rows;
+      renderCohortFilter();
+      renderRoster();
+      if (isLocal) describeLocal();
+      /* Without the book's own day list this page can still show progress, but
+         not day titles or a true percentage. Say which, and how to fix it. */
+      $("bookWarn").hidden = !!dayCount();
+      if (!dayCount()) {
+        $("bookWarn").innerHTML =
+          "<b>Day titles and whole-book percentages are missing.</b> " +
+          'Open <a href="book.html">the book</a> once in this browser, then come back — ' +
+          "the dashboard reads its day list and field counts from the book itself.";
+      }
+    }, function (e) { fail(e.message); });
+  }
+
+  labelsReady().then(load);
+})();
+</script>
+</body>
+</html>

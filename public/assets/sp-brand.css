@@ -1,0 +1,78 @@
+/* Service Professionals brand tokens — shared by login and dashboard.
+   Colors from the company logo guide. Keep in sync with book.html. */
+:root{
+  --paper:#F4F7FA; --card:#FFFFFF; --card-2:#FBFCFE;
+  --ink:#16233A; --ink-soft:#4B5B76; --ink-faint:#8493AB;
+  --rule:#D9E0EA; --rule-soft:#E9EEF4;
+  --navy:#263F6A; --navy-deep:#1B2E4E; --navy-wash:#E9EFF7;
+  --cyan:#009FDA; --cyan-ink:#00749F; --cyan-wash:#E3F4FC;
+  --orange:#E37222; --orange-ink:#AF5310; --orange-wash:#FDF0E4;
+  --sand:#FBCE92; --sand-wash:#FDF3E3;
+  --good:#1E7A5A; --good-wash:#E4F4EE;
+  --warn:#B4571A;
+  --shadow:0 1px 2px rgba(22,35,58,.06), 0 10px 28px -14px rgba(22,35,58,.22);
+  --sans:"Futura","Avenir Next","Century Gothic","Segoe UI",system-ui,-apple-system,sans-serif;
+  --serif:"Sitka Text",Charter,"Bitstream Charter",Cambria,Georgia,serif;
+  --mono:"IBM Plex Mono",Consolas,"Liberation Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1420; --card:#161F2E; --card-2:#1B2536;
+    --ink:#E7EDF6; --ink-soft:#AAB8CD; --ink-faint:#6E7F99;
+    --rule:#28364C; --rule-soft:#1F2B3D;
+    --navy:#5A87CC; --navy-deep:#0A111C; --navy-wash:#1A2540;
+    --cyan:#37B8EC; --cyan-ink:#79CFF4; --cyan-wash:#122A3A;
+    --orange:#F08B45; --orange-ink:#F6AE73; --orange-wash:#2C1F13;
+    --sand:#E4C48F; --sand-wash:#241D12;
+    --good:#57C79C; --good-wash:#12271F;
+    --warn:#F0A164;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 30px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1420; --card:#161F2E; --card-2:#1B2536;
+  --ink:#E7EDF6; --ink-soft:#AAB8CD; --ink-faint:#6E7F99;
+  --rule:#28364C; --rule-soft:#1F2B3D;
+  --navy:#5A87CC; --navy-deep:#0A111C; --navy-wash:#1A2540;
+  --cyan:#37B8EC; --cyan-ink:#79CFF4; --cyan-wash:#122A3A;
+  --orange:#F08B45; --orange-ink:#F6AE73; --orange-wash:#2C1F13;
+  --sand:#E4C48F; --sand-wash:#241D12;
+  --good:#57C79C; --good-wash:#12271F;
+  --warn:#F0A164;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 30px -14px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:16.5px;line-height:1.6}
+h1,h2,h3,h4,.u-sans{font-family:var(--sans);margin:0}
+p{margin:0}
+a{color:var(--cyan-ink)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--cyan);outline-offset:2px;border-radius:3px}
+
+.crest-mark{display:flex;align-items:baseline;gap:.4rem;font-family:var(--sans)}
+.crest-mark b{font-weight:800;letter-spacing:-.015em}
+.crest-mark span{font-weight:600;letter-spacing:-.015em;color:var(--sand)}
+.eyebrow{font-family:var(--sans);font-size:.62rem;letter-spacing:.19em;text-transform:uppercase}
+
+.btn{font-family:var(--sans);font-size:.82rem;font-weight:600;background:var(--card);color:var(--ink);
+     border:1px solid var(--rule);border-radius:8px;padding:.55rem .95rem}
+.btn:hover{border-color:var(--cyan);color:var(--cyan-ink)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{background:var(--cyan);border-color:var(--cyan);color:#04283A}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn.ghost{background:transparent;border-style:dashed}
+
+.field{display:grid;gap:.3rem}
+.field label{font-family:var(--sans);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;
+             color:var(--ink-faint);font-weight:700}
+.field input,.field textarea,.field select{
+  width:100%;font-family:var(--serif);font-size:1rem;color:var(--ink);background:var(--card);
+  border:1px solid var(--rule);border-radius:8px;padding:.6rem .75rem}
+.field input:focus,.field textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-wash);outline:none}
+
+.msg{border-radius:8px;padding:.65rem .8rem;font-family:var(--sans);font-size:.82rem;line-height:1.45}
+.msg.err{background:var(--orange-wash);color:var(--orange-ink);border:1px solid var(--orange)}
+.msg.ok{background:var(--good-wash);color:var(--good);border:1px solid var(--good)}
+.msg.info{background:var(--navy-wash);color:var(--navy);border:1px solid var(--rule)}
+.msg[hidden]{display:none}
