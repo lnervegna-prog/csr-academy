@@ -24,7 +24,7 @@ to a different computer, nothing survives a cleared cache, and none of it reache
 the manager. Completed workbooks come back as emailed text files or not at all.
 
 **v1 turns the book into a real application:** every rep signs in with their
-Service Professionals Google account, their answers and drill scores save to a
+Service Professionals email, their answers and drill scores save to a
 database, and managers get a live dashboard showing where each rep stands —
 including the Day 5 gate that clears a rep to start taking live calls.
 
@@ -49,7 +49,7 @@ hear it on a live call.
 | G3 | Drill performance is recorded, so a 1-on-1 can open with evidence instead of an impression |
 | G4 | The Day 5 live-call gate is signed by a manager and cannot be self-signed |
 | G5 | All 9 current reps run the academy to establish a baseline, then every new hire runs it |
-| G6 | Zero password administration — no accounts to create, no resets to handle |
+| G6 | Zero password administration — no accounts to create, no passwords to issue. Resets remain manual; see F1 |
 | G7 | When a procedure changes, a single day can be reassigned to reps who already finished |
 
 ### Non-goals for v1
@@ -98,7 +98,7 @@ flowchart TB
     S[Static hosting<br/>auto-deploy from GitHub]
   end
   subgraph Supabase
-    A[Auth<br/>Google OAuth]
+    A[Auth<br/>email + password]
     P[(Postgres<br/>+ Row Level Security)]
   end
   G[GitHub repo<br/>curriculum + code]
@@ -106,7 +106,7 @@ flowchart TB
 
   G -->|push| S
   S --> L & B & D
-  L -->|Google sign-in| A
+  L -->|sign in / sign up| A
   A -->|JWT| B & D
   B <-->|answers, scores| P
   D -->|read all, write sign-offs| P
@@ -132,26 +132,42 @@ and nothing more. No API, no credentials, no data flowing back.
 
 ## 5. Features
 
-### F1 — Authentication (Google SSO) · built
+### F1 — Authentication (self-service, work email) · built
 
-Reps sign in with their `@service-professionals.com` Google account. No passwords
-are issued, stored, or reset by anyone.
+Reps create their own accounts with their `@service-professionals.com` email and
+a password they choose. Nobody issues a password and nobody is added by hand.
 
-- **Sign in with Google** is the primary path. One click, no typing.
-- Domain restricted in **two independent layers**: the Google Cloud OAuth consent
-  screen set to *Internal*, and a database trigger that refuses account creation
-  for any other email domain. If the consent screen is ever loosened, layer two
-  still holds.
-- Accounts are created on first sign-in; the name comes from Google. **No user
-  administration.**
-- Email and password remains as a fallback and for testing, not the advertised path.
-- Both OAuth response shapes are handled — tokens in the URL fragment (implicit)
-  and `?code=` (PKCE). A password-reset link is the only thing that reaches the
-  new-password screen; an OAuth callback never is.
+**Decision: Google SSO was dropped in favour of self-service email signup.** The
+Google route was fully configured — Cloud project, consent screen confirmed
+Internal — and then set aside, because signup that anyone on the company domain
+can complete themselves achieves the same goal with fewer moving parts and no
+dependency on an OAuth client, a consent screen, or a second vendor. The Google
+code remains in `sp-api.js` and can be re-enabled without a migration.
+
+- **Create your account** is the first-run path: work email, a password of their
+  choosing, straight into the book.
+- Open signup is only safe because the door behind it is shut. A trigger on
+  `auth.users` rejects account creation for any address outside the company
+  domain, so the page can be open while the database stays closed. This is the
+  same `enforce_email_domain()` that previously backed up the consent screen; it
+  is now the primary control rather than the second layer.
+- A profile row is created automatically on signup. **There is no user
+  administration** — no accounts to create, no passwords to hand out.
+- **Email confirmation is off.** Supabase's built-in sender is rate-limited and
+  not production-grade; leaving confirmation on would strand a cohort signing up
+  the same morning. The domain trigger is the real gate, and the confirmation
+  email adds delay rather than safety.
+- Password resets go through that same sender and are therefore best-effort. A
+  manager resetting directly in Supabase is the reliable path, and custom SMTP is
+  the fix if resets ever become common. **This is the one part of G6 that
+  survives as real administrative work.**
 - Sessions persist across browser restarts and refresh silently.
 
-**If the company turns out to be on Microsoft 365:** Supabase supports Azure.
-Change `provider=google` to `provider=azure`; nothing else changes.
+**Accepted risk:** with confirmation off, someone on the company domain could
+register using a colleague's address. The population is nine known people on a
+closed domain, a manager sees every account in the People tab, and the content is
+training material rather than anything sensitive. Turning confirmation on later
+is a single setting once SMTP is configured.
 
 ### F2 — The workbook · built
 
@@ -451,37 +467,23 @@ book deliberately ungated · drill scores recorded and disclosed at kickoff.
 
 ---
 
-## Appendix A — Setup brief for IT
+## Appendix A — Account setup
 
-Everything needed, in one request.
+**Superseded.** This appendix was a brief to hand IT, written when it looked like
+the OAuth consent screen and all three vendor accounts would need an
+administrator. Neither turned out to be true:
 
-**1. Google Cloud (Service Professionals Workspace org)**
+- Google Cloud was never gated — the project and an Internal consent screen were
+  both created without help. That work is now unused anyway; see the decision
+  in F1.
+- Supabase, GitHub and Netlify are all provided as organization teams.
 
-- Create an **OAuth consent screen**, User type **Internal**.
-- Create an **OAuth client ID**, type **Web application**.
-- Authorised redirect URI: `https://<supabase-project-ref>.supabase.co/auth/v1/callback`
-  — the project ref comes from step 2, so do this after.
-- **Send back:** the client ID and client secret.
+What remains is in `README.md` under *Phase two — going hosted*: create the
+Supabase project in the org team, run `schema.sql`, set the sign-in options
+described in F1, push to the org GitHub repo, point Netlify at it.
 
-**2. Supabase (company team account)**
-
-- Create a project, region `us-east-1`.
-- **Send back:** the Project URL and the `anon` public key.
-- Do **not** send the `service_role` key — it bypasses all security policies and
-  is not needed.
-
-**3. Netlify (company team account)**
-
-- Create a site from the GitHub repo. Build command: none. Publish directory:
-  `public`.
-- **Send back:** the site URL.
-
-**4. Back in Supabase, once the site URL exists**
-
-- Authentication → Providers → Google: enable, paste the client ID and secret.
-- Authentication → URL Configuration: Site URL = the Netlify URL; add
-  `<netlify-url>/index.html` to Redirect URLs.
-
-**Why the anon key is safe to share:** it identifies the project, not a user.
-Every request is evaluated against Row Level Security policies in the database.
-The full setup, including the SQL to run, is in the repo `README.md`.
+One thing worth carrying forward, because it bit us once: the office network was
+silently dropping traffic to `auth.supabase.io`, which looked like a broken
+login. Anything in `*.supabase.co` and `*.supabase.io` needs to be reachable
+from the floor, and that is worth confirming from a rep's machine rather than a
+manager's before a cohort starts.

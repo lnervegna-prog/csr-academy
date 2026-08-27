@@ -24,8 +24,13 @@
    is safe in a browser. Row Level Security in schema.sql is what protects the
    data, not this key.
 
-   NEVER put the "service_role" key in this file. That one bypasses every
-   security policy. If it ever lands here, rotate it in Supabase immediately.
+   Two key formats exist and both work here: the legacy anon JWT starting
+   "eyJ...", and the newer publishable key starting "sb_publishable_...".
+   They go in the same place and are sent the same way.
+
+   NEVER put the "service_role" (or "secret") key in this file. That one
+   bypasses every security policy. If it ever lands here, rotate it in
+   Supabase immediately.
 --------------------------------------------------------------------------- */
-window.SP_URL = "https://YOUR-PROJECT-REF.supabase.co";
-window.SP_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";
+window.SP_URL = "https://uzrzkwehusnrudkjisur.supabase.co";
+window.SP_ANON_KEY = "sb_publishable_epYIgLAYAOoiQ-hz7B-ogg_UkXzHNsx";

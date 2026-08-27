@@ -1,6 +1,6 @@
 # Service Professionals — CSR Academy
 
-The 13-day new-hire training book, with Google sign-in, progress that follows the
+The 13-day new-hire training book, with self-service sign-in, progress that follows the
 rep to any computer, recorded drill scores, and a manager dashboard.
 
 Spec: [`docs/PRD.md`](docs/PRD.md).
@@ -10,10 +10,10 @@ It runs in one of two modes, decided entirely by whether
 
 | | **Local** (now) | **Hosted** (phase two) |
 |---|---|---|
-| Sign in | pick your name | Google |
+| Sign in | pick your name | your work email and a password you choose |
 | Storage | this browser, this computer | one shared database |
 | Rules | enforced by the interface | enforced by Postgres |
-| Setup | none | Supabase + Google Cloud + Netlify |
+| Setup | none | Supabase + GitHub + Netlify |
 
 Both modes run the *same* book and the *same* dashboard. `sp-local.js` answers
 with the shapes Supabase returns, so neither page contains a local-mode code
@@ -86,41 +86,45 @@ Nothing below is needed to use the academy locally.
    in the Row Level Security policies from `schema.sql`, not in hiding the key.
    **Never** put the `service_role` key in this repo; it bypasses every policy.
 
-### 2. Google sign-in
+### 2. Sign-in settings
 
-In **Google Cloud Console**, for the Service Professionals Workspace org:
+Reps create their own accounts. There is no user administration: nobody issues
+a password, and nobody gets added by hand.
 
-1. **APIs & Services → OAuth consent screen** → **Internal**. This is domain
-   lock, layer one: only Workspace accounts can complete the flow at all.
-2. **Credentials → Create credentials → OAuth client ID → Web application**.
-   Authorised redirect URI:
-   `https://YOUR-PROJECT-REF.supabase.co/auth/v1/callback`
-3. Copy the client ID and secret.
+That is only safe because the database refuses anyone else. `enforce_email_domain()`
+in `schema.sql` is a trigger on `auth.users` that rejects account creation for any
+address outside `service-professionals.com`. Open signup plus a closed door.
 
-In **Supabase → Authentication → Providers → Google**: enable it, paste the
-client ID and secret, save.
+In **Supabase → Authentication → Sign In / Providers → Email**:
 
-In **Supabase → Authentication → URL Configuration**:
-- **Site URL** → `https://your-site.netlify.app`
-- **Redirect URLs** → add `https://your-site.netlify.app/index.html`
+- **Enable email provider** — on.
+- **Allow new users to sign up** — on. This is what lets reps self-serve.
+- **Confirm email** — **off**. Supabase's built-in mail sender is rate-limited to
+  a handful of messages an hour and is not meant for production, so leaving
+  confirmation on means nine reps signing up on a Monday morning hit a wall and
+  sit there unable to get in. The domain trigger is the real gate; the
+  confirmation email adds delay, not safety.
+- **Minimum password length** — set it to 10 to match what the page asks for.
 
-Domain lock, layer two, is already in the schema: `enforce_email_domain()`
-refuses to create an account for any address outside
-`service-professionals.com`. If the consent screen is ever loosened by mistake,
-this still holds. To change the domain, edit `allowed_email_domain()` at the top
-of `schema.sql` and re-run it.
+To change which domain is allowed, edit `allowed_email_domain()` at the top of
+`schema.sql` and re-run the file.
 
-**On Microsoft 365 instead of Google Workspace?** Supabase supports Azure as a
-provider. Enable it there, then change `provider=google` to `provider=azure` in
-`signInWithGoogle()` in `sp-api.js`. Nothing else changes.
+**Forgotten passwords** go through that same rate-limited sender, so treat the
+reset email as best-effort. The reliable fix is for a manager to reset it in
+**Supabase → Authentication → Users**, which takes about fifteen seconds. If
+resets ever become frequent, point Supabase at your Google Workspace SMTP under
+**Project Settings → Auth → SMTP Settings** and the flakiness goes away.
 
-The sign-in page handles both OAuth response shapes — tokens in the URL fragment
-(implicit) and `?code=` (PKCE, which is what it asks for) — so it works whichever
-way the project is configured.
+**Wanting Google sign-in later?** The code for it is still in `sp-api.js`
+(`signInWithGoogle`, and `finishSignIn` already handles both OAuth response
+shapes). Configure the provider in Supabase and put the button back on
+`index.html`. Supabase links a Google identity to an existing account when the
+verified email matches — worth proving with one test account before trusting it
+with everyone's workbook.
 
 ### 3. Make yourself the manager
 
-Sign in once with Google so your account exists, then run this **one** query:
+Create your own account in the app first, so the row exists. Then run this **one** query:
 
 ```sql
 update public.profiles set role = 'manager'
@@ -145,9 +149,10 @@ Written for hosted mode. Locally everything below is the same except how you
 sign in and where the data sits — the sidebar says *Saved on this computer*, and
 the last sentence of this paragraph is the part that only comes true hosted.
 
-**Reps** click *Sign in with Google* and land on the book. There are no passwords
-to issue, and no accounts to create — a profile appears the first time someone
-signs in. Answers save to their account a second or so after they stop typing;
+**Reps** click *Create your account*, enter their work email and a password they
+pick themselves, and land on the book. Nobody issues a password and nobody adds
+them by hand — a profile appears the moment they sign up, and the database turns
+away any address outside the company domain. Answers save to their account a second or so after they stop typing;
 the sidebar says *Saved to your account*. Closing the laptop mid-Day-6 and
 opening a different computer the next morning picks up exactly where they were.
 

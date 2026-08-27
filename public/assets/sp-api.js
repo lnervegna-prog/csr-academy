@@ -73,9 +73,18 @@
   function friendlyAuthError(raw) {
     var m = String(raw || "");
     if (/database error saving new user|only .* accounts can use|42501/i.test(m)) {
-      return "That account isn't a Service Professionals account. " +
-             "Sign in with your @service-professionals.com Google account.";
+      return "That has to be a @service-professionals.com email address.";
     }
+    if (/already registered|already been registered/i.test(m)) {
+      return "There is already an account for that email. Sign in instead, or use Forgot password.";
+    }
+    if (/password should be at least|weak password|at least 6 characters/i.test(m)) {
+      return "That password is too short — use at least 10 characters.";
+    }
+    if (/signups? not allowed|signup is disabled/i.test(m)) {
+      return "New accounts are switched off in Supabase. Tell Lauren.";
+    }
+
     if (/access_denied|user cancelled|consent required/i.test(m)) {
       return "Sign-in was cancelled.";
     }
@@ -227,6 +236,33 @@
       return loadProfile();
     });
   }
+
+  /* Self-service signup. Open by design: a database trigger refuses any address
+     outside the company domain, so there is nothing to gate in the page that the
+     schema does not already gate harder. */
+  function signUp(email, password) {
+    if (!configured) return Promise.reject(new Error("This site is not connected to Supabase yet. See assets/sp-config.js."));
+    return fetch(URL_BASE + "/auth/v1/signup", {
+      method: "POST",
+      headers: { "apikey": ANON, "Content-Type": "application/json" },
+      body: JSON.stringify({ email: String(email || "").trim(), password: password || "" })
+    }).then(function (res) {
+      if (!res.ok) return readError(res);
+      return res.json();
+    }).then(function (data) {
+      /* With email confirmation off, signup hands back a session and the rep is
+         straight in. With it on there is no session and they must click a link
+         first — say so plainly rather than looking broken. */
+      if (!data.access_token) {
+        var e = new Error("Account created. Check your email for the confirmation link, then sign in.");
+        e.needsConfirmation = true;
+        return Promise.reject(e);
+      }
+      adopt(data);
+      return loadProfile();
+    });
+  }
+
 
   function refresh() {
     if (!session || !session.refresh_token) return Promise.reject(new Error("No session"));
@@ -479,6 +515,7 @@
     isManager: isManager,
 
     signIn: signIn,
+    signUp: signUp,
     signInWithGoogle: signInWithGoogle,
     finishSignIn: finishSignIn,
     signOut: signOut,
