@@ -32,5 +32,5 @@
    bypasses every security policy. If it ever lands here, rotate it in
    Supabase immediately.
 --------------------------------------------------------------------------- */
-window.SP_URL = "https://uzrzkwehusnrudkjisur.supabase.co";
-window.SP_ANON_KEY = "sb_publishable_epYIgLAYAOoiQ-hz7B-ogg_UkXzHNsx";
+window.SP_URL = "https://ctcxaoqyscmmavsdiikc.supabase.co";
+window.SP_ANON_KEY = "sb_publishable_HqLS9crnL1CEbXNLxDLf6Q_LQOfTG_S";
