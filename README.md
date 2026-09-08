@@ -5,6 +5,8 @@ rep to any computer, recorded drill scores, and a manager dashboard.
 
 Spec: [`docs/PRD.md`](docs/PRD.md).
 
+**Live: https://sp-csr-academy.netlify.app** — deploys automatically on push to `main`.
+
 It runs in one of two modes, decided entirely by whether
 `public/assets/sp-config.js` has real Supabase values in it:
 
