@@ -272,6 +272,7 @@ button{font:inherit; color:inherit; cursor:pointer}
 .tick li{display:grid; grid-template-columns:auto 1fr; gap:.6rem; align-items:start; font-size:.99rem}
 .tick li::before{content:""; margin-top:.55em; width:.42rem; height:.42rem; border-radius:50%; background:var(--cyan)}
 .tick.warnlist li::before{background:var(--orange)}
+.hintline{font-family:var(--sans); font-size:.84rem; color:var(--ink-soft); margin:.9rem 0 0}
 .num-list{counter-reset:n; list-style:none; margin:.9rem 0 0; padding:0; max-width:var(--measure); display:grid; gap:.4rem}
 .num-list li{counter-increment:n; display:grid; grid-template-columns:1.7rem 1fr; gap:.65rem; align-items:baseline; font-size:.99rem}
 .num-list li::before{
@@ -1416,9 +1417,9 @@ td.mark{text-align:center; width:3.4rem}
       <div class="sub">
         <h3>How today runs</h3>
         <ul class="tick">
-          <li><b>Warm-up</b> &mdash; the Golden Call Flow from memory, one more time. Fifteen minutes.</li>
-          <li><b>Most of the day</b> &mdash; ServiceTitan, with Chrystal walking you through it. Then you build one yourself in NEXT.</li>
-          <li><b>Late afternoon</b> &mdash; shadowing. You listen to live calls and log what you hear.</li>
+          <li><span><b>Warm-up</b> &mdash; the Golden Call Flow from memory, one more time. Fifteen minutes.</span></li>
+          <li><span><b>Most of the day</b> &mdash; ServiceTitan, with Chrystal walking you through it. Then you build one yourself in NEXT.</span></li>
+          <li><span><b>Late afternoon</b> &mdash; shadowing. You listen to live calls and log what you hear.</span></li>
         </ul>
       </div>
       <div class="coach-block">
@@ -1529,7 +1530,7 @@ td.mark{text-align:center; width:3.4rem}
 
       <div class="sub">
         <h3>Record what you built</h3>
-        <p class="hint">Write the job or appointment number here so it can be looked up.</p>
+        <p class="hintline">Write the job or appointment number here so it can be looked up.</p>
         <div class="write">
           <div class="field"><label for="d3job1"><span class="qn">01</span>Job / appointment number</label><textarea id="d3job1" data-save rows="1"></textarea></div>
           <div class="field"><label for="d3job2"><span class="qn">02</span>What was the customer calling about, in one line?</label><textarea id="d3job2" data-save rows="2"></textarea></div>
@@ -1557,7 +1558,7 @@ td.mark{text-align:center; width:3.4rem}
         <div class="write">
           <div class="field"><label for="d3c1a"><span class="qn">01</span>What were they calling about?</label><textarea id="d3c1a" data-save rows="2"></textarea></div>
         </div>
-        <p class="hint">Steps you heard:</p>
+        <p class="hintline">Steps you heard:</p>
         <ul class="checks">
           <li><label class="chk"><input type="checkbox" data-save><span>Professional greeting</span></label></li>
           <li><label class="chk"><input type="checkbox" data-save><span>Got the customer&rsquo;s name</span></label></li>
@@ -1580,7 +1581,7 @@ td.mark{text-align:center; width:3.4rem}
         <div class="write">
           <div class="field"><label for="d3c2a"><span class="qn">03</span>What were they calling about?</label><textarea id="d3c2a" data-save rows="2"></textarea></div>
         </div>
-        <p class="hint">Steps you heard:</p>
+        <p class="hintline">Steps you heard:</p>
         <ul class="checks">
           <li><label class="chk"><input type="checkbox" data-save><span>Professional greeting</span></label></li>
           <li><label class="chk"><input type="checkbox" data-save><span>Got the customer&rsquo;s name</span></label></li>
@@ -1603,7 +1604,7 @@ td.mark{text-align:center; width:3.4rem}
         <div class="write">
           <div class="field"><label for="d3c3a"><span class="qn">05</span>What were they calling about?</label><textarea id="d3c3a" data-save rows="2"></textarea></div>
         </div>
-        <p class="hint">Steps you heard:</p>
+        <p class="hintline">Steps you heard:</p>
         <ul class="checks">
           <li><label class="chk"><input type="checkbox" data-save><span>Professional greeting</span></label></li>
           <li><label class="chk"><input type="checkbox" data-save><span>Got the customer&rsquo;s name</span></label></li>
@@ -1637,7 +1638,7 @@ td.mark{text-align:center; width:3.4rem}
 
       <div class="sub">
         <h3>How today actually went</h3>
-        <p class="hint">Tick everything true. More than one is normal.</p>
+        <p class="hintline">Tick everything true. More than one is normal.</p>
         <ul class="checks">
           <li><label class="chk"><input type="checkbox" data-save><span>I got real hands-on time</span></label></li>
           <li><label class="chk"><input type="checkbox" data-save><span>I mostly watched</span></label></li>
