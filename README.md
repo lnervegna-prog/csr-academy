@@ -23,7 +23,8 @@ path, and going hosted is pasting two values into one file.
 
 - `run-local.cmd` — double-click to run the academy on this computer
 - `public/index.html` — sign in
-- `public/book.html` — the 13-day academy workbook (Days 1–13)
+- `public/book.html` — the 13-day academy workbook (Days 1–13). Day 2 runs in two
+  parts either side of lunch; Day 3 is ServiceTitan plus shadowing live calls.
 - `public/dashboard.html` — Lauren's view: team progress, what the team fails,
   people admin, and the only place a day gets signed off
 - `public/assets/sp-config.js` — the two Supabase values, and the mode switch
