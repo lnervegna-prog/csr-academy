@@ -5950,11 +5950,15 @@ td.mark{text-align:center; width:3.4rem}
     var box = document.createElement("div");
     box.className = "acct";
     box.innerHTML = '<div class="sync" data-sync data-state="ok">' + SAVED_MSG + '</div>' +
+                    '<button type="button" class="acct-out" id="btnDash" hidden>Dashboard</button>' +
                     '<button type="button" class="acct-out" id="btnSignOut">Sign out</button>';
     foot.appendChild(box);
     syncEl = box.querySelector("[data-sync]");
     document.getElementById("btnSignOut").addEventListener("click", function(){
       SP.signOut().then(function(){ location.href = "index.html"; });
+    });
+    document.getElementById("btnDash").addEventListener("click", function(){
+      location.href = "dashboard.html";
     });
   }
 
@@ -6030,6 +6034,12 @@ td.mark{text-align:center; width:3.4rem}
 
     SP.loadProfile().then(function(p){
       repName.value = (p && p.full_name) || (SP.session().user && SP.session().user.email) || "";
+      /* A manager working through the book needs a way back. Reps never see
+         this — and never could reach the dashboard anyway, it bounces them. */
+      if (SP.isManager && SP.isManager()){
+        var d = document.getElementById("btnDash");
+        if (d) d.hidden = false;
+      }
       return SP.loadMyProgress();
     }).then(function(rows){
       /* the account is the source of truth — replace the local cache with it */

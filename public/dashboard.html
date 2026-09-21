@@ -145,6 +145,7 @@
   <span class="eyebrow">Academy Dashboard</span>
   <span class="spacer"></span>
   <span class="who" id="who"></span>
+  <button type="button" id="btnBook">Open the workbook</button>
   <button type="button" id="btnRefresh">Refresh</button>
   <button type="button" id="btnCsv">Export CSV</button>
   <button type="button" id="btnBackup" hidden>Back up everything</button>
@@ -817,6 +818,9 @@
     SP.signOut().then(function () { location.href = "index.html"; });
   });
   $("btnPrint").addEventListener("click", function () { window.print(); });
+  /* Managers work through the book too — following along during a training
+     session, or just knowing what a rep is looking at. */
+  $("btnBook").addEventListener("click", function () { location.href = "book.html"; });
   $("btnRefresh").addEventListener("click", function () {
     analysisLoaded = false;
     peopleLoaded = false;
