@@ -1095,42 +1095,42 @@ td.mark{text-align:center; width:3.4rem}
         <div class="team-stage">
 
           <figure class="team-card" data-team-slide>
-            <div class="team-photo"><img data-team-img src="assets/team/amanda.jpg" alt="Amanda"><span class="team-initials">A</span></div>
+            <div class="team-photo"><img data-team-img data-photo="amanda" alt="Amanda"><span class="team-initials">A</span></div>
             <figcaption><b>Amanda</b><span>Assistant Manager</span></figcaption>
           </figure>
 
           <figure class="team-card" data-team-slide>
-            <div class="team-photo"><img data-team-img src="assets/team/chrystal.jpg" alt="Chrystal"><span class="team-initials">C</span></div>
+            <div class="team-photo"><img data-team-img data-photo="chrystal" alt="Chrystal"><span class="team-initials">C</span></div>
             <figcaption><b>Chrystal</b><span>Lead Trainer</span></figcaption>
           </figure>
 
           <figure class="team-card" data-team-slide>
-            <div class="team-photo"><img data-team-img src="assets/team/roxy.jpg" alt="Roxy"><span class="team-initials">R</span></div>
+            <div class="team-photo"><img data-team-img data-photo="roxy" alt="Roxy"><span class="team-initials">R</span></div>
             <figcaption><b>Roxy</b><span>Customer Service Representative</span></figcaption>
           </figure>
 
           <figure class="team-card" data-team-slide>
-            <div class="team-photo"><img data-team-img src="assets/team/nakeemah.jpg" alt="Nakeemah"><span class="team-initials">N</span></div>
+            <div class="team-photo"><img data-team-img data-photo="nakeemah" alt="Nakeemah"><span class="team-initials">N</span></div>
             <figcaption><b>Nakeemah</b><span>Customer Service Representative</span></figcaption>
           </figure>
 
           <figure class="team-card" data-team-slide>
-            <div class="team-photo"><img data-team-img src="assets/team/kel.jpg" alt="Kel"><span class="team-initials">K</span></div>
+            <div class="team-photo"><img data-team-img data-photo="kel" alt="Kel"><span class="team-initials">K</span></div>
             <figcaption><b>Kel</b><span>Customer Service Representative</span></figcaption>
           </figure>
 
           <figure class="team-card" data-team-slide>
-            <div class="team-photo"><img data-team-img src="assets/team/ashley.jpg" alt="Ashley"><span class="team-initials">A</span></div>
+            <div class="team-photo"><img data-team-img data-photo="ashley" alt="Ashley"><span class="team-initials">A</span></div>
             <figcaption><b>Ashley</b><span>Customer Service Representative</span></figcaption>
           </figure>
 
           <figure class="team-card" data-team-slide>
-            <div class="team-photo"><img data-team-img src="assets/team/jacqui.jpg" alt="Jacqui"><span class="team-initials">J</span></div>
+            <div class="team-photo"><img data-team-img data-photo="jacqui" alt="Jacqui"><span class="team-initials">J</span></div>
             <figcaption><b>Jacqui</b><span>Customer Service Representative</span></figcaption>
           </figure>
 
           <figure class="team-card" data-team-slide>
-            <div class="team-photo"><img data-team-img src="assets/team/aaliyah.jpg" alt="Aaliyah"><span class="team-initials">A</span></div>
+            <div class="team-photo"><img data-team-img data-photo="aaliyah" alt="Aaliyah"><span class="team-initials">A</span></div>
             <figcaption><b>Aaliyah</b><span>Customer Service Representative</span></figcaption>
           </figure>
 
@@ -6094,9 +6094,18 @@ td.mark{text-align:center; width:3.4rem}
     var dots = w.querySelector("[data-team-dots]");
     if (!slides.length) return;
     var at = 0;
-    /* a photo that has not been added yet just falls back to the initial */
+    /* Try each format in turn. Drop amanda.webp or amanda.jpg or amanda.png
+       into assets/team/ and whichever one exists is the one that shows. If
+       none do, the img removes itself and the initial behind it shows. */
+    var PHOTO_EXT = ["webp", "jpg", "jpeg", "png"];
     w.querySelectorAll("[data-team-img]").forEach(function(img){
-      img.addEventListener("error", function(){ img.remove(); });
+      var tried = 0;
+      function next(){
+        if (tried >= PHOTO_EXT.length){ img.remove(); return; }
+        img.src = "assets/team/" + img.dataset.photo + "." + PHOTO_EXT[tried++];
+      }
+      img.addEventListener("error", next);
+      next();
     });
     slides.forEach(function(_, i){
       var d = document.createElement("i");
