@@ -273,6 +273,34 @@ button{font:inherit; color:inherit; cursor:pointer}
 .tick li::before{content:""; margin-top:.55em; width:.42rem; height:.42rem; border-radius:50%; background:var(--cyan)}
 .tick.warnlist li::before{background:var(--orange)}
 .hintline{font-family:var(--sans); font-size:.84rem; color:var(--ink-soft); margin:.9rem 0 0}
+/* Meet-your-team slideshow. Photos live in assets/team/<name>.jpg; until one
+   exists the initial shows instead, so the page is never broken by a missing
+   file. */
+.team-show{margin:1.1rem 0 0; max-width:var(--measure)}
+.team-stage{position:relative; border:1px solid var(--rule); border-radius:12px;
+            background:var(--card-2); padding:1.6rem 1rem; min-height:14rem;
+            display:grid; place-items:center}
+.team-card{display:none; margin:0; text-align:center}
+.team-card.on{display:block}
+.team-photo{position:relative; width:8rem; height:8rem; margin:0 auto; border-radius:50%;
+            overflow:hidden; background:var(--navy-wash); border:2px solid var(--rule);
+            display:grid; place-items:center}
+.team-photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.team-initials{font-family:var(--sans); font-size:2.4rem; font-weight:800; color:var(--navy)}
+.team-card figcaption{margin-top:.85rem}
+.team-card figcaption b{display:block; font-family:var(--sans); font-size:1.05rem;
+                        font-weight:800; color:var(--navy); letter-spacing:-.01em}
+.team-card figcaption span{display:block; margin-top:.15rem; font-family:var(--sans);
+                           font-size:.78rem; color:var(--ink-soft)}
+.team-nav{display:flex; align-items:center; justify-content:center; gap:.9rem; margin-top:.8rem}
+.team-arrow{width:2rem; height:2rem; border-radius:50%; border:1px solid var(--rule);
+            background:var(--card); color:var(--navy); font-size:1.1rem; line-height:1}
+.team-arrow:hover{border-color:var(--cyan); color:var(--cyan-ink)}
+.team-dots{display:flex; gap:.35rem}
+.team-dots i{width:.45rem; height:.45rem; border-radius:50%; background:var(--rule); cursor:pointer}
+.team-dots i.on{background:var(--cyan)}
+@media print{ .team-card{display:block; page-break-inside:avoid} .team-nav{display:none} }
+
 .num-list{counter-reset:n; list-style:none; margin:.9rem 0 0; padding:0; max-width:var(--measure); display:grid; gap:.4rem}
 .num-list li{counter-increment:n; display:grid; grid-template-columns:1.7rem 1fr; gap:.65rem; align-items:baseline; font-size:.99rem}
 .num-list li::before{
@@ -805,13 +833,14 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d1s2" data-sec="Meet Your Trainer">
-      <h2><span class="snum">1.2</span> Meet your trainer</h2>
+    <section class="sec" id="d1s2" data-sec="Meet Your Manager">
+      <h2><span class="snum">1.2</span> Meet your manager</h2>
       <div class="coach-block">
         <div class="who"><span>LC</span> Lauren says</div>
         <div class="flow">
           <p>I started at Service Professionals as a Customer Service Representative just like you. When I was given the opportunity to lead this department, my vision wasn&rsquo;t simply to manage a call center &mdash; it was to build a team known for remarkable customer experiences.</p>
           <p>Throughout this academy I challenge you to <strong>think like the customer before thinking like the CSR</strong>.</p>
+          <p>I am your <strong>manager</strong>. <strong>Chrystal</strong> is our lead trainer and runs the day to day of this academy, and <strong>Amanda</strong> is our assistant manager. You will meet the whole team properly tomorrow.</p>
         </div>
       </div>
       <div class="sub">
@@ -1019,8 +1048,111 @@ td.mark{text-align:center; width:3.4rem}
     </div>
 
 
-    <section class="sec" id="d2s1" data-sec="Today's Mission">
-      <h2><span class="snum">2.1</span> Today&rsquo;s mission</h2>
+    <section class="sec" id="d2s1" data-sec="Your Last Call Center">
+      <h2><span class="snum">2.1</span> Before we teach you ours &mdash; show us yours</h2>
+      <div class="flow">
+        <p class="lede">Before a single word about the Service Professionals call flow, we want to hear how you did it before. Pair up and run a call the way you would have run it at your last job.</p>
+      </div>
+
+      <div class="coach-block">
+        <div class="who"><span>LC</span> Coach&rsquo;s corner</div>
+        <div class="flow">
+          <p>There is no wrong answer here and nothing is being graded. You were trained somewhere else by people who had their reasons, and some of what you already do is going to be better than ours.</p>
+          <p>I am asking for two things. One, so you can hear the difference yourself by Friday instead of being told about it. Two, because every new person brings something we should probably steal.</p>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Run it</h3>
+        <div class="flow">
+          <p>One of you is the customer with a problem &mdash; no heat, a leak, whatever you like. The other takes the call exactly the way they would have at their previous company. Then swap.</p>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Write it down while it is fresh</h3>
+        <div class="write">
+          <div class="field"><label for="d2rp1"><span class="qn">01</span>How did you open the call at your last company? Write the actual words.</label><textarea id="d2rp1" data-save rows="3"></textarea></div>
+          <div class="field"><label for="d2rp2"><span class="qn">02</span>What were you required to say on every call, if anything?</label><textarea id="d2rp2" data-save rows="3"></textarea></div>
+          <div class="field"><label for="d2rp3"><span class="qn">03</span>How did you handle it when a customer asked what it would cost?</label><textarea id="d2rp3" data-save rows="3"></textarea></div>
+          <div class="field"><label for="d2rp4"><span class="qn">04</span>What was your last company measuring you on?</label><textarea id="d2rp4" data-save rows="2"></textarea></div>
+          <div class="field"><label for="d2rp5"><span class="qn">05</span>What is one thing they did that you think we should do too?</label><textarea id="d2rp5" data-save rows="3"></textarea></div>
+        </div>
+      </div>
+
+      <aside class="note rule">
+        <p>Come back to this page on Friday. Read your own answers next to what you have learned since, and you will see exactly how far you moved in a week.</p>
+      </aside>
+    </section>
+
+    <section class="sec" id="d2s2" data-sec="Meet Your Team">
+      <h2><span class="snum">2.2</span> Meet your team</h2>
+      <div class="flow">
+        <p class="lede">These are the people around you. You will be asking every one of them something in your first month, so put faces to names now.</p>
+      </div>
+
+      <div class="team-show" data-team>
+        <div class="team-stage">
+
+          <figure class="team-card" data-team-slide>
+            <div class="team-photo"><img data-team-img src="assets/team/amanda.jpg" alt="Amanda"><span class="team-initials">A</span></div>
+            <figcaption><b>Amanda</b><span>Assistant Manager</span></figcaption>
+          </figure>
+
+          <figure class="team-card" data-team-slide>
+            <div class="team-photo"><img data-team-img src="assets/team/chrystal.jpg" alt="Chrystal"><span class="team-initials">C</span></div>
+            <figcaption><b>Chrystal</b><span>Lead Trainer</span></figcaption>
+          </figure>
+
+          <figure class="team-card" data-team-slide>
+            <div class="team-photo"><img data-team-img src="assets/team/roxy.jpg" alt="Roxy"><span class="team-initials">R</span></div>
+            <figcaption><b>Roxy</b><span>Customer Service Representative</span></figcaption>
+          </figure>
+
+          <figure class="team-card" data-team-slide>
+            <div class="team-photo"><img data-team-img src="assets/team/nakeemah.jpg" alt="Nakeemah"><span class="team-initials">N</span></div>
+            <figcaption><b>Nakeemah</b><span>Customer Service Representative</span></figcaption>
+          </figure>
+
+          <figure class="team-card" data-team-slide>
+            <div class="team-photo"><img data-team-img src="assets/team/kel.jpg" alt="Kel"><span class="team-initials">K</span></div>
+            <figcaption><b>Kel</b><span>Customer Service Representative</span></figcaption>
+          </figure>
+
+          <figure class="team-card" data-team-slide>
+            <div class="team-photo"><img data-team-img src="assets/team/ashley.jpg" alt="Ashley"><span class="team-initials">A</span></div>
+            <figcaption><b>Ashley</b><span>Customer Service Representative</span></figcaption>
+          </figure>
+
+          <figure class="team-card" data-team-slide>
+            <div class="team-photo"><img data-team-img src="assets/team/jacqui.jpg" alt="Jacqui"><span class="team-initials">J</span></div>
+            <figcaption><b>Jacqui</b><span>Customer Service Representative</span></figcaption>
+          </figure>
+
+          <figure class="team-card" data-team-slide>
+            <div class="team-photo"><img data-team-img src="assets/team/aaliyah.jpg" alt="Aaliyah"><span class="team-initials">A</span></div>
+            <figcaption><b>Aaliyah</b><span>Customer Service Representative</span></figcaption>
+          </figure>
+
+        </div>
+        <div class="team-nav">
+          <button type="button" class="team-arrow" data-team-prev aria-label="Previous">&lsaquo;</button>
+          <span class="team-dots" data-team-dots></span>
+          <button type="button" class="team-arrow" data-team-next aria-label="Next">&rsaquo;</button>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Put it to use</h3>
+        <div class="write">
+          <div class="field"><label for="d2tm1"><span class="qn">06</span>Who did you meet today, and what is one thing you learned about them?</label><textarea id="d2tm1" data-save rows="3"></textarea></div>
+          <div class="field"><label for="d2tm2"><span class="qn">07</span>Who would you go to first if you were stuck mid-call and could not find an answer?</label><textarea id="d2tm2" data-save rows="2"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="d2s3" data-sec="Today's Mission">
+      <h2><span class="snum">2.3</span> Today&rsquo;s mission</h2>
       <div class="flow">
         <p class="lede">Learn to confidently guide every conversation by building trust, showing empathy, controlling the call, and creating a remarkable customer experience.</p>
       </div>
@@ -1038,8 +1170,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s2" data-sec="The Golden Call Flow">
-      <h2><span class="snum">2.2</span> The Golden Call Flow</h2>
+    <section class="sec" id="d2s4" data-sec="The Golden Call Flow">
+      <h2><span class="snum">2.4</span> The Golden Call Flow</h2>
       <aside class="note rule">
         <span class="tag">Sequence, not script</span>
         <p>The order matters. The exact words don&rsquo;t. You should be able to hit all ten in your own voice.</p>
@@ -1071,8 +1203,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s3" data-sec="Gold Standard Greeting">
-      <h2><span class="snum">2.3</span> The Gold Standard greeting</h2>
+    <section class="sec" id="d2s5" data-sec="Gold Standard Greeting">
+      <h2><span class="snum">2.5</span> The Gold Standard greeting</h2>
       <div class="flow"><p>Read this out loud. Every line below is doing a job &mdash; the step number tells you which one.</p></div>
       <div class="script">
         <div class="line"><span class="step">1&middot;2</span><span class="txt">&ldquo;Thank you for calling your Thumbs Up Guys at Service Professionals, this is Lauren speaking. Who do I have the pleasure of speaking with today?&rdquo;<em>Greeting + get the name before anything else</em></span></div>
@@ -1084,8 +1216,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s4" data-sec="Controlling the Call">
-      <h2><span class="snum">2.4</span> Controlling the call</h2>
+    <section class="sec" id="d2s6" data-sec="Controlling the Call">
+      <h2><span class="snum">2.6</span> Controlling the call</h2>
       <aside class="note">
         <span class="tag">Never let silence create doubt</span>
         <p>A pause after the fee is an invitation to object. Keep moving into value.</p>
@@ -1108,8 +1240,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s5" data-sec="Listen Beyond the Words">
-      <h2><span class="snum">2.5</span> Listen beyond the words</h2>
+    <section class="sec" id="d2s7" data-sec="Listen Beyond the Words">
+      <h2><span class="snum">2.7</span> Listen beyond the words</h2>
       <div class="flow"><p>Every question has an emotion behind it. Identify the concern before answering the question.</p></div>
       <div class="widget">
         <header><b>Objection decoder</b><span class="hint">Answer in your head first, then open the row</span></header>
@@ -1150,8 +1282,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s6" data-sec="Knowledge Check &middot; Part One">
-      <h2><span class="snum">2.6</span> Knowledge check</h2>
+    <section class="sec" id="d2s8" data-sec="Knowledge Check &middot; Part One">
+      <h2><span class="snum">2.8</span> Knowledge check</h2>
       <div class="write">
         <div class="field">
           <label for="d2k1"><span class="qn">K1</span>What is the purpose of the first 60 seconds?</label>
@@ -1199,8 +1331,8 @@ td.mark{text-align:center; width:3.4rem}
     </div>
 
 
-    <section class="sec" id="d2s7" data-sec="After Lunch">
-      <h2><span class="snum">2.7</span> After lunch &mdash; where we&rsquo;re going</h2>
+    <section class="sec" id="d2s9" data-sec="After Lunch">
+      <h2><span class="snum">2.9</span> After lunch &mdash; where we&rsquo;re going</h2>
       <div class="flow">
         <p class="lede">By the end of Day Two you will confidently build trust, present the $89 service fee, create value through memberships, and guide customers through common objections without sounding like a salesperson.</p>
       </div>
@@ -1220,8 +1352,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s8" data-sec="Service Fee Philosophy">
-      <h2><span class="snum">2.8</span> The service fee philosophy</h2>
+    <section class="sec" id="d2s10" data-sec="Service Fee Philosophy">
+      <h2><span class="snum">2.10</span> The service fee philosophy</h2>
       <aside class="note">
         <span class="tag">Never apologize</span>
         <p>&ldquo;Unfortunately&rdquo; and &ldquo;there is a fee&rdquo; both sound like an apology. Present it as part of the process, because it is.</p>
@@ -1249,8 +1381,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s9" data-sec="Memberships">
-      <h2><span class="snum">2.9</span> Memberships build value</h2>
+    <section class="sec" id="d2s11" data-sec="Memberships">
+      <h2><span class="snum">2.11</span> Memberships build value</h2>
       <div class="flow">
         <p class="pull">We don&rsquo;t sell memberships. We educate customers about how memberships protect their home and save money over time.</p>
       </div>
@@ -1283,8 +1415,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s10" data-sec="Objection Practice">
-      <h2><span class="snum">2.10</span> Listen beyond the words &mdash; again</h2>
+    <section class="sec" id="d2s12" data-sec="Objection Practice">
+      <h2><span class="snum">2.12</span> Listen beyond the words &mdash; again</h2>
       <aside class="note rule">
         <span class="tag">Day 2 vs Day 3</span>
         <p>Same objections, higher bar. Today you respond out loud before you open the row.</p>
@@ -1312,8 +1444,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d2s11" data-sec="Full Call Role Play">
-      <h2><span class="snum">2.11</span> Partner role play &mdash; full call</h2>
+    <section class="sec" id="d2s13" data-sec="Full Call Role Play">
+      <h2><span class="snum">2.13</span> Partner role play &mdash; full call</h2>
       <div class="flow"><p>Complete a full call from greeting through scheduling. Your partner checks off each element they actually heard.</p></div>
       <ul class="checks">
         <li><label class="chk strong"><input type="checkbox" data-save><span>Greeting</span></label></li>
@@ -1326,8 +1458,8 @@ td.mark{text-align:center; width:3.4rem}
       </ul>
     </section>
 
-    <section class="sec" id="d2s12" data-sec="Knowledge Check &middot; Part Two">
-      <h2><span class="snum">2.12</span> Knowledge check</h2>
+    <section class="sec" id="d2s14" data-sec="Knowledge Check &middot; Part Two">
+      <h2><span class="snum">2.14</span> Knowledge check</h2>
       <div class="write">
         <div class="field">
           <label for="d2pk1"><span class="qn">K1</span>Why is confidence more important than memorizing scripts?</label>
@@ -1997,61 +2129,8 @@ td.mark{text-align:center; width:3.4rem}
       </aside>
     </section>
 
-    <section class="sec" id="d5s7" data-sec="Membership Memo Lab">
-      <h2><span class="snum">5.7</span> Membership memo lab</h2>
-      <div class="flow"><p>Read each mock memo and decide what you would do.</p></div>
-
-      <div class="sub">
-        <h3>Memo A &mdash; Full RPP | 1 Heat | 1 AC</h3>
-        <div class="write">
-          <div class="field"><label for="d10a1">How many HVAC systems are included?</label><textarea id="d10a1" data-save rows="1"></textarea>
-            <button type="button" class="reveal-btn" data-reveal>Answer</button>
-            <div class="model"><span class="tag">Answer</span><p>One heating and one cooling &mdash; the standard base RPP, no add-ons.</p></div></div>
-          <div class="field"><label for="d10a2">What must be copied into the job summary?</label><textarea id="d10a2" data-save rows="2"></textarea>
-            <button type="button" class="reveal-btn" data-reveal>Answer</button>
-            <div class="model"><span class="tag">Answer</span><p>The membership memo itself &mdash; revenue, number of units, and any included add-ons.</p></div></div>
-        </div>
-      </div>
-
-      <div class="sub">
-        <h3>Memo B &mdash; RPP + AH | 2 HVAC systems</h3>
-        <div class="write">
-          <div class="field"><label for="d10b1">What does the additional AH tell you?</label><textarea id="d10b1" data-save rows="2"></textarea>
-            <button type="button" class="reveal-btn" data-reveal>Answer</button>
-            <div class="model"><span class="tag">Answer</span><p>There is an additional air handler on the account &mdash; two HVAC systems, not the standard one. This is not a base RPP.</p></div></div>
-          <div class="field"><label for="d10b2">What booking mistake are you trying to avoid?</label><textarea id="d10b2" data-save rows="2"></textarea>
-            <button type="button" class="reveal-btn" data-reveal>Answer</button>
-            <div class="model"><span class="tag">Answer</span><p>Scheduling only one maintenance when the customer is owed two &mdash; which leaves a second system unserviced and the customer calling back annoyed.</p></div></div>
-        </div>
-      </div>
-
-      <div class="sub">
-        <h3>Memo C &mdash; Plumbing Partnership Plan only</h3>
-        <div class="write">
-          <div class="field"><label for="d10c1">Does the customer pay the $89 service fee on a plumbing service call?</label><textarea id="d10c1" data-save rows="1"></textarea>
-            <button type="button" class="reveal-btn" data-reveal>Answer</button>
-            <div class="model"><span class="tag">Answer</span><p>Yes. A partial trade plan does not waive the service fee &mdash; only TUC does.</p></div></div>
-          <div class="field"><label for="d10c2">What repair discount applies?</label><textarea id="d10c2" data-save rows="1"></textarea>
-            <button type="button" class="reveal-btn" data-reveal>Answer</button>
-            <div class="model"><span class="tag">Answer</span><p>10%.</p></div></div>
-        </div>
-      </div>
-
-      <div class="sub">
-        <h3>Memo D &mdash; TUC</h3>
-        <div class="write">
-          <div class="field"><label for="d10d1">What happens to the $89 service fee?</label><textarea id="d10d1" data-save rows="1"></textarea>
-            <button type="button" class="reveal-btn" data-reveal>Answer</button>
-            <div class="model"><span class="tag">Answer</span><p>Waived &mdash; across all trades.</p></div></div>
-          <div class="field"><label for="d10d2">What repair discount applies?</label><textarea id="d10d2" data-save rows="1"></textarea>
-            <button type="button" class="reveal-btn" data-reveal>Answer</button>
-            <div class="model"><span class="tag">Answer</span><p>15%.</p></div></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" id="d5s8" data-sec="Member ≠ Free">
-      <h2><span class="snum">5.8</span> &ldquo;Member&rdquo; does not always mean free</h2>
+    <section class="sec" id="d5s7" data-sec="Member ≠ Free">
+      <h2><span class="snum">5.7</span> &ldquo;Member&rdquo; does not always mean free</h2>
       <div class="flow"><p>One of the most important membership skills is explaining the difference between <strong>included</strong>, <strong>discounted</strong> and <strong>add-on</strong> benefits.</p></div>
       <div class="widget">
         <header><b>Customer assumption &rarr; CSR thinking</b><span class="hint">Answer in your head first</span></header>
@@ -2070,8 +2149,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d5s9" data-sec="RPP Member Value">
-      <h2><span class="snum">5.9</span> RPP member value &mdash; know it, don&rsquo;t overload the call</h2>
+    <section class="sec" id="d5s8" data-sec="RPP Member Value">
+      <h2><span class="snum">5.8</span> RPP member value &mdash; know it, don&rsquo;t overload the call</h2>
       <div class="flow"><p>The customer packet includes additional value CSRs should recognize, even if they never recite all of it on a phone call.</p></div>
       <ul class="tick">
         <li><span>$100 annual reward voucher, earned at the end of each membership year for qualifying major equipment purchases</span></li>
@@ -2086,8 +2165,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d5s10" data-sec="Cancellations & Saves">
-      <h2><span class="snum">5.10</span> Cancellations &amp; saves</h2>
+    <section class="sec" id="d5s9" data-sec="Cancellations & Saves">
+      <h2><span class="snum">5.9</span> Cancellations &amp; saves</h2>
       <div class="flow"><p>When a customer wants to cancel, the CSR must document the reason and complete the follow-up process.</p></div>
       <ul class="checks">
         <li><label class="chk"><input type="checkbox" data-save><span>Ask and document <strong>why</strong> the customer is cancelling</span></label></li>
@@ -2110,8 +2189,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d5s11" data-sec="Every Call Is an Opportunity">
-      <h2><span class="snum">5.11</span> Every call is a membership opportunity</h2>
+    <section class="sec" id="d5s10" data-sec="Every Call Is an Opportunity">
+      <h2><span class="snum">5.10</span> Every call is a membership opportunity</h2>
       <div class="flow"><p>Membership should become part of the CSR&rsquo;s normal call flow &mdash; not an awkward sales pitch bolted on at the end.</p></div>
       <div class="vals">
         <div class="val"><h4>New customer</h4><p>Use TUC to build value around the $89 service fee, and introduce waived fees plus repair savings.</p></div>
@@ -2126,59 +2205,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d5s12" data-sec="Scenario Lab">
-      <h2><span class="snum">5.12</span> Day Five membership scenario lab</h2>
-
-      <div class="sub">
-        <h3>Scenario 1 &mdash; service fee</h3>
-        <div class="flow"><p style="font-style:italic">&ldquo;I have the full RPP. Why are you charging me $89?&rdquo;</p></div>
-        <div class="write">
-          <div class="field"><label for="d10l1a">What should you verify?</label><textarea id="d10l1a" data-save rows="2"></textarea></div>
-          <div class="field"><label for="d10l1b">How would you explain the difference between RPP and TUC without making the customer feel dismissed?</label><textarea id="d10l1b" data-save rows="3"></textarea></div>
-        </div>
-      </div>
-
-      <div class="sub">
-        <h3>Scenario 2 &mdash; two systems</h3>
-        <div class="flow"><p>Customer wants heating maintenance. The memo says <strong>RPP + AH</strong>.</p></div>
-        <div class="write">
-          <div class="field"><label for="d10l2a">What should that immediately tell you?</label><textarea id="d10l2a" data-save rows="2"></textarea></div>
-          <div class="field"><label for="d10l2b">What must go into the job summary?</label><textarea id="d10l2b" data-save rows="2"></textarea></div>
-          <div class="field"><label for="d10l2c">Where do you schedule the recurring maintenance from?</label><textarea id="d10l2c" data-save rows="1"></textarea></div>
-        </div>
-      </div>
-
-      <div class="sub">
-        <h3>Scenario 3 &mdash; partial plan</h3>
-        <div class="flow"><p>Customer has Plumbing Partnership only and needs a leaking faucet repaired.</p></div>
-        <div class="write">
-          <div class="field"><label for="d10l3a">Does the $89 service fee apply?</label><textarea id="d10l3a" data-save rows="1"></textarea></div>
-          <div class="field"><label for="d10l3b">What repair discount applies?</label><textarea id="d10l3b" data-save rows="1"></textarea></div>
-        </div>
-      </div>
-
-      <div class="sub">
-        <h3>Scenario 4 &mdash; cancellation</h3>
-        <div class="flow"><p>Full RPP customer says the plan is too much and wants to cancel.</p></div>
-        <div class="write">
-          <div class="field"><label for="d10l4a">What save option should you offer?</label><textarea id="d10l4a" data-save rows="1"></textarea></div>
-          <div class="field"><label for="d10l4b">Where must the cancellation reason be documented?</label><textarea id="d10l4b" data-save rows="2"></textarea></div>
-          <div class="field"><label for="d10l4c">What follow-up is sent?</label><textarea id="d10l4c" data-save rows="1"></textarea></div>
-        </div>
-      </div>
-
-      <div class="sub">
-        <h3>Scenario 5 &mdash; new customer</h3>
-        <div class="flow"><p>New customer needs an electrician and objects to the $89 service fee.</p></div>
-        <div class="write">
-          <div class="field"><label for="d10l5a">Which membership is the simplest bridge?</label><textarea id="d10l5a" data-save rows="1"></textarea></div>
-          <div class="field"><label for="d10l5b">Give your natural TUC response.</label><textarea id="d10l5b" data-save rows="3"></textarea></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" id="d5s13" data-sec="Day 5 Challenge">
-      <h2><span class="snum">5.13</span> Day Five membership challenge</h2>
+    <section class="sec" id="d5s11" data-sec="Day 5 Challenge">
+      <h2><span class="snum">5.11</span> Day Five membership challenge</h2>
       <div class="write">
         <div class="field"><label for="d10c01"><span class="qn">01</span>What are the three membership paths a CSR must distinguish?</label><textarea id="d10c01" data-save rows="2"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>TUC (Thumbs Up Club), a partial / individual trade plan, and the full RPP.</p></div></div>
@@ -2186,33 +2214,31 @@ td.mark{text-align:center; width:3.4rem}
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>TUC.</p></div></div>
         <div class="field"><label for="d10c03"><span class="qn">03</span>What does TUC cost monthly?</label><textarea id="d10c03" data-save rows="1"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>$9.99/month.</p></div></div>
-        <div class="field"><label for="d10c04"><span class="qn">04</span>Which membership waives the $89 service fee?</label><textarea id="d10c04" data-save rows="1"></textarea>
-          <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>TUC only.</p></div></div>
-        <div class="field"><label for="d10c05"><span class="qn">05</span>What repair discount applies to partial trade plans?</label><textarea id="d10c05" data-save rows="1"></textarea>
-          <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>10%.</p></div></div>
+        <div class="field"><label for="d10c04"><span class="qn">04</span>Which memberships waive the $89 dispatch fee?</label><textarea id="d10c04" data-save rows="1"></textarea>
+          <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p><strong>Both TUC and RPP</strong> waive the $89 dispatch fee. That is why membership status is the first thing you check &mdash; it changes the fee conversation completely.</p></div></div>
+        <div class="field"><label for="d10c05"><span class="qn">05</span>How much % off estimates does a partial trade member receive?</label><textarea id="d10c05" data-save rows="1"></textarea>
+          <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>10% off estimates. If a customer pushes back with &ldquo;I already have a plan,&rdquo; that is your opening to talk about <strong>RPP</strong> &mdash; 15% off <em>and</em> waived dispatch fees.</p></div></div>
         <div class="field"><label for="d10c06"><span class="qn">06</span>What repair discount applies to the full RPP?</label><textarea id="d10c06" data-save rows="1"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>15%.</p></div></div>
         <div class="field"><label for="d10c07"><span class="qn">07</span>How many heating and cooling systems are included in the base full RPP?</label><textarea id="d10c07" data-save rows="1"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>One heating system and one cooling system. Anything beyond that is an add-on and must be in the memo.</p></div></div>
         <div class="field"><label for="d10c08"><span class="qn">08</span>What should you do before scheduling EVERY membership maintenance?</label><textarea id="d10c08" data-save rows="2"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>Check the last maintenance date (10&ndash;12 months), confirm how many systems, then open the Membership tab and read, copy and use the memo.</p></div></div>
-        <div class="field"><label for="d10c09"><span class="qn">09</span>Where must the membership maintenance be scheduled from?</label><textarea id="d10c09" data-save rows="1"></textarea>
-          <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>The Membership tab recurring service event &mdash; never the main call screen.</p></div></div>
-        <div class="field"><label for="d10c10"><span class="qn">10</span>What does &ldquo;RPP + AH&rdquo; tell you to investigate before booking?</label><textarea id="d10c10" data-save rows="2"></textarea>
+        <div class="field"><label for="d10c10"><span class="qn">09</span>What does &ldquo;RPP + AH&rdquo; tell you to investigate before booking?</label><textarea id="d10c10" data-save rows="2"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>That there is an additional air handler &mdash; a second HVAC system. Read the memo and book what the account actually includes.</p></div></div>
-        <div class="field"><label for="d10c11"><span class="qn">11</span>If a full RPP customer wants to cancel, what downgrade should you attempt?</label><textarea id="d10c11" data-save rows="1"></textarea>
+        <div class="field"><label for="d10c11"><span class="qn">10</span>If a full RPP customer wants to cancel, what downgrade should you attempt?</label><textarea id="d10c11" data-save rows="1"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>TUC.</p></div></div>
-        <div class="field"><label for="d10c12"><span class="qn">12</span>Where must the cancellation reason be documented?</label><textarea id="d10c12" data-save rows="1"></textarea>
+        <div class="field"><label for="d10c12"><span class="qn">11</span>Where must the cancellation reason be documented?</label><textarea id="d10c12" data-save rows="1"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>Both the Membership memo and the customer&rsquo;s account.</p></div></div>
-        <div class="field"><label for="d10c13"><span class="qn">13</span>What follow-up should the customer receive after cancellation?</label><textarea id="d10c13" data-save rows="1"></textarea>
+        <div class="field"><label for="d10c13"><span class="qn">12</span>What follow-up should the customer receive after cancellation?</label><textarea id="d10c13" data-save rows="1"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>A cancellation confirmation email that also asks for their feedback.</p></div></div>
-        <div class="field"><label for="d10c14"><span class="qn">14</span>Complete the rule: Every call is a ______________________.</label><textarea id="d10c14" data-save rows="1"></textarea>
+        <div class="field"><label for="d10c14"><span class="qn">13</span>Complete the rule: Every call is a ______________________.</label><textarea id="d10c14" data-save rows="1"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>Membership opportunity.</p></div></div>
       </div>
     </section>
 
-    <section class="sec" id="d5s14" data-sec="Live Call Readiness">
-      <h2><span class="snum">5.14</span> Live call readiness assessment</h2>
+    <section class="sec" id="d5s12" data-sec="Live Call Readiness">
+      <h2><span class="snum">5.12</span> Live call readiness assessment</h2>
       <aside class="note">
         <span class="tag">What ready means</span>
         <p>Ready does not mean perfect. Ready means the CSR can consistently hit the key points, adapt to the customer, and maintain control of the call.</p>
@@ -2249,8 +2275,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d5s15" data-sec="Phase One Graduation">
-      <h2><span class="snum">5.15</span> Phase One graduation</h2>
+    <section class="sec" id="d5s13" data-sec="Phase One Graduation">
+      <h2><span class="snum">5.13</span> Phase One graduation</h2>
       <div class="banner">
         <span class="tag">You completed the foundation</span>
         <p>You have practiced our culture, call flow, confidence, empathy, call control, customer experience, and live-call readiness.</p>
@@ -3334,8 +3360,76 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s2" data-sec="When to Book a Comfort Advisor">
-      <h2><span class="snum">9.2</span> Sales &mdash; when to book a Comfort Advisor</h2>
+    <section class="sec" id="d9s2" data-sec="Opening Shift with Amanda">
+      <h2><span class="snum">9.2</span> Morning &mdash; the opening shift with Amanda</h2>
+      <div class="flow">
+        <p class="lede">You start today on the opening shift with Amanda. Phones are not the only way a customer reaches us, and this is the morning you learn the other four.</p>
+      </div>
+
+      <div class="coach-block">
+        <div class="who"><span>LC</span> Coach&rsquo;s corner</div>
+        <div class="flow">
+          <p>A text that sits unanswered for an hour is the same lost booking as a call that rings out. The customer does not know or care which channel they used.</p>
+          <p>Watch how Amanda moves between them. The skill is not any one tool &mdash; it is knowing what is waiting where, and checking all of it.</p>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>What you cover this morning</h3>
+        <ul class="tick">
+          <li><span><b>Netic</b> &mdash; our overflow and after-hours platform. What came in overnight, and what still needs a human.</span></li>
+          <li><span><b>ServiceTitan Chat</b> &mdash; who is asking what, and how quickly it gets answered.</span></li>
+          <li><span><b>Email</b> &mdash; what lands in the inbox and what a good reply looks like.</span></li>
+          <li><span><b>RingCentral texts</b> &mdash; viewing them, responding to them, and knowing when a text should become a call.</span></li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <h3>Netic</h3>
+        <div class="write">
+          <div class="field"><label for="d9am1"><span class="qn">01</span>What does Netic handle for us, and when does it take a call instead of us?</label><textarea id="d9am1" data-save rows="3"></textarea></div>
+          <div class="field"><label for="d9am2"><span class="qn">02</span>What did you find waiting from overnight, and what had to happen to it?</label><textarea id="d9am2" data-save rows="3"></textarea></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>ServiceTitan Chat</h3>
+        <div class="write">
+          <div class="field"><label for="d9am3"><span class="qn">03</span>What kinds of things come through chat rather than the phone?</label><textarea id="d9am3" data-save rows="2"></textarea></div>
+          <div class="field"><label for="d9am4"><span class="qn">04</span>How is a chat different from a call &mdash; what still has to happen the same way?</label><textarea id="d9am4" data-save rows="3"></textarea></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Email</h3>
+        <div class="write">
+          <div class="field"><label for="d9am5"><span class="qn">05</span>What does a good reply look like? Write one you saw, or one you would send.</label><textarea id="d9am5" data-save rows="4"></textarea></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>RingCentral texts</h3>
+        <div class="write">
+          <div class="field"><label for="d9am6"><span class="qn">06</span>Where do you see incoming texts, and how do you reply?</label><textarea id="d9am6" data-save rows="2"></textarea></div>
+          <div class="field"><label for="d9am7"><span class="qn">07</span>When should a text stop being a text and become a phone call?</label><textarea id="d9am7" data-save rows="3"></textarea></div>
+        </div>
+      </div>
+
+      <div class="banner warn">
+        <span class="tag">Remember</span>
+        <p>Every one of these channels can produce a booking, and every one of them can lose one. The Golden Call Flow does not stop applying because the customer typed instead of talked &mdash; you still qualify, you still build value, you still ask for the appointment.</p>
+      </div>
+
+      <div class="sub">
+        <h3>What surprised you</h3>
+        <div class="write">
+          <div class="field"><label for="d9am8"><span class="qn">08</span>What did you not expect about the opening shift?</label><textarea id="d9am8" data-save rows="3"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="d9s3" data-sec="When to Book a Comfort Advisor">
+      <h2><span class="snum">9.3</span> Sales &mdash; when to book a Comfort Advisor</h2>
       <aside class="note rule">
         <span class="tag">The appointment</span>
         <p>A complimentary replacement consultation, typically about <strong>90 minutes</strong>.</p>
@@ -3395,8 +3489,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s3" data-sec="Sales Appointment Times">
-      <h2><span class="snum">9.3</span> Sales appointment times</h2>
+    <section class="sec" id="d9s4" data-sec="Sales Appointment Times">
+      <h2><span class="snum">9.4</span> Sales appointment times</h2>
       <div class="tbl-wrap">
         <table>
           <thead><tr><th>Day</th><th>Standard sales times</th></tr></thead>
@@ -3424,8 +3518,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s4" data-sec="Book It Correctly">
-      <h2><span class="snum">9.4</span> Book it correctly &mdash; sales checklist</h2>
+    <section class="sec" id="d9s5" data-sec="Book It Correctly">
+      <h2><span class="snum">9.5</span> Book it correctly &mdash; sales checklist</h2>
       <ul class="checks">
         <li><label class="chk"><input type="checkbox" data-save><span>Assign <strong>Z-SALES</strong></span></label></li>
         <li><label class="chk"><input type="checkbox" data-save><span>Add the <strong>green SALES tag</strong></span></label></li>
@@ -3449,8 +3543,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s5" data-sec="Brand Reference">
-      <h2><span class="snum">9.5</span> HVAC installation brand reference</h2>
+    <section class="sec" id="d9s6" data-sec="Brand Reference">
+      <h2><span class="snum">9.6</span> HVAC installation brand reference</h2>
       <div class="tbl-wrap">
         <table>
           <thead><tr><th>Equipment</th><th>Brands / availability</th></tr></thead>
@@ -3474,8 +3568,8 @@ td.mark{text-align:center; width:3.4rem}
       </aside>
     </section>
 
-    <section class="sec" id="d9s6" data-sec="Rebates">
-      <h2><span class="snum">9.6</span> Rebates &mdash; awareness, not expertise</h2>
+    <section class="sec" id="d9s7" data-sec="Rebates">
+      <h2><span class="snum">9.7</span> Rebates &mdash; awareness, not expertise</h2>
       <div class="flow">
         <p>New Jersey utility programs may offer rebates for qualifying high-efficiency equipment. Eligibility and amounts depend on the utility, the equipment and current program requirements.</p>
         <p class="pull">Rebates are an opportunity &mdash; not a promise.</p>
@@ -3501,8 +3595,8 @@ td.mark{text-align:center; width:3.4rem}
       </aside>
     </section>
 
-    <section class="sec" id="d9s7" data-sec="OBR — On-Bill Repayment">
-      <h2><span class="snum">9.7</span> OBR &mdash; On-Bill Repayment</h2>
+    <section class="sec" id="d9s8" data-sec="OBR — On-Bill Repayment">
+      <h2><span class="snum">9.8</span> OBR &mdash; On-Bill Repayment</h2>
       <div class="flow"><p>OBR may be available for qualifying high-efficiency projects through utility programs such as PSE&amp;G and JCP&amp;L. Exclusions and eligibility requirements apply.</p></div>
       <div class="sub">
         <h3>The CSR-level explanation</h3>
@@ -3537,8 +3631,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s8" data-sec="Financing">
-      <h2><span class="snum">9.8</span> Financing &mdash; keep it simple</h2>
+    <section class="sec" id="d9s9" data-sec="Financing">
+      <h2><span class="snum">9.9</span> Financing &mdash; keep it simple</h2>
       <div class="script">
         <div class="line"><span class="step">CSR</span><span class="txt">&ldquo;We do have financing options available, and your Comfort Advisor will review those with you during the complimentary appointment.&rdquo;</span></div>
       </div>
@@ -3585,8 +3679,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s9" data-sec="Permits">
-      <h2><span class="snum">9.9</span> Permits &mdash; what a CSR needs to know</h2>
+    <section class="sec" id="d9s10" data-sec="Permits">
+      <h2><span class="snum">9.10</span> Permits &mdash; what a CSR needs to know</h2>
       <div class="flow"><p>Every installation requires the applicable permit process. Service Professionals handles the permit process with the municipality.</p></div>
       <div class="tbl-wrap">
         <table>
@@ -3606,8 +3700,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s10" data-sec="Permit Calls">
-      <h2><span class="snum">9.10</span> Permit calls &mdash; what do I tell the customer?</h2>
+    <section class="sec" id="d9s11" data-sec="Permit Calls">
+      <h2><span class="snum">9.11</span> Permit calls &mdash; what do I tell the customer?</h2>
       <div class="sub">
         <h3>Customer calls at week 2 or 3</h3>
         <div class="script">
@@ -3629,8 +3723,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s11" data-sec="After the Sale">
-      <h2><span class="snum">9.11</span> After the sale &mdash; what else should the CSR know?</h2>
+    <section class="sec" id="d9s12" data-sec="After the Sale">
+      <h2><span class="snum">9.12</span> After the sale &mdash; what else should the CSR know?</h2>
       <ul class="checks">
         <li><label class="chk"><input type="checkbox" data-save><span>Every installation follows the permit process</span></label></li>
         <li><label class="chk"><input type="checkbox" data-save><span>Every installation includes <strong>one year of the RPP membership</strong></span></label></li>
@@ -3649,8 +3743,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s12" data-sec="Scenario Lab">
-      <h2><span class="snum">9.12</span> Day Nine scenario lab</h2>
+    <section class="sec" id="d9s13" data-sec="Scenario Lab">
+      <h2><span class="snum">9.13</span> Day Nine scenario lab</h2>
       <div class="sub">
         <h3>Replacement call</h3>
         <div class="flow"><p style="font-style:italic">&ldquo;My 18-year-old furnace finally died. I think I need a new one.&rdquo;</p></div>
@@ -3693,8 +3787,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d9s13" data-sec="Day 9 Challenge">
-      <h2><span class="snum">9.13</span> Day Nine knowledge challenge</h2>
+    <section class="sec" id="d9s14" data-sec="Day 9 Challenge">
+      <h2><span class="snum">9.14</span> Day Nine knowledge challenge</h2>
       <div class="write">
         <div class="field"><label for="d9c1"><span class="qn">01</span>How long is a typical Comfort Advisor appointment?</label><textarea id="d9c1" data-save rows="1"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>About 90 minutes, and it is complimentary.</p></div></div>
@@ -4899,9 +4993,7 @@ td.mark{text-align:center; width:3.4rem}
     </div>
   </header>
 
-  <div class="page"><div class="page-body">
-
-    <section class="sec" id="d13s1" data-sec="Today's Mission">
+  <div class="page"><div class="page-body">    <section class="sec" id="d13s1" data-sec="Today's Mission">
       <h2><span class="snum">13.1</span> Today&rsquo;s mission</h2>
       <div class="flow">
         <p class="lede">Today you build. Ten membership maintenance calls, booked properly in ServiceTitan NEXT &mdash; through the Recurring Service tab, with the memo copied in and the correct trade assigned. Then you learn to open, comp and cancel a membership.</p>
@@ -5486,8 +5578,112 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d13s12" data-sec="Day 13 Final Audit">
-      <h2><span class="snum">13.12</span> Day Thirteen final audit</h2>
+    <section class="sec" id="d13s12" data-sec="Membership Memo Lab">
+      <h2><span class="snum">13.12</span> Membership memo lab</h2>
+      <div class="flow"><p>Read each mock memo and decide what you would do.</p></div>
+
+      <div class="sub">
+        <h3>Memo A &mdash; Full RPP | 1 Heat | 1 AC</h3>
+        <div class="write">
+          <div class="field"><label for="d10a1">How many HVAC systems are included?</label><textarea id="d10a1" data-save rows="1"></textarea>
+            <button type="button" class="reveal-btn" data-reveal>Answer</button>
+            <div class="model"><span class="tag">Answer</span><p>One heating and one cooling &mdash; the standard base RPP, no add-ons.</p></div></div>
+          <div class="field"><label for="d10a2">What must be copied into the job summary?</label><textarea id="d10a2" data-save rows="2"></textarea>
+            <button type="button" class="reveal-btn" data-reveal>Answer</button>
+            <div class="model"><span class="tag">Answer</span><p>The membership memo itself &mdash; revenue, number of units, and any included add-ons.</p></div></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Memo B &mdash; RPP + AH | 2 HVAC systems</h3>
+        <div class="write">
+          <div class="field"><label for="d10b1">What does the additional AH tell you?</label><textarea id="d10b1" data-save rows="2"></textarea>
+            <button type="button" class="reveal-btn" data-reveal>Answer</button>
+            <div class="model"><span class="tag">Answer</span><p>There is an additional air handler on the account &mdash; two HVAC systems, not the standard one. This is not a base RPP.</p></div></div>
+          <div class="field"><label for="d10b2">What booking mistake are you trying to avoid?</label><textarea id="d10b2" data-save rows="2"></textarea>
+            <button type="button" class="reveal-btn" data-reveal>Answer</button>
+            <div class="model"><span class="tag">Answer</span><p>Scheduling only one maintenance when the customer is owed two &mdash; which leaves a second system unserviced and the customer calling back annoyed.</p></div></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Memo C &mdash; Plumbing Partnership Plan only</h3>
+        <div class="write">
+          <div class="field"><label for="d10c1">Does the customer pay the $89 service fee on a plumbing service call?</label><textarea id="d10c1" data-save rows="1"></textarea>
+            <button type="button" class="reveal-btn" data-reveal>Answer</button>
+            <div class="model"><span class="tag">Answer</span><p>Yes. A partial trade plan does not waive the service fee &mdash; only TUC does.</p></div></div>
+          <div class="field"><label for="d10c2">What repair discount applies?</label><textarea id="d10c2" data-save rows="1"></textarea>
+            <button type="button" class="reveal-btn" data-reveal>Answer</button>
+            <div class="model"><span class="tag">Answer</span><p>10%.</p></div></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Memo D &mdash; TUC</h3>
+        <div class="write">
+          <div class="field"><label for="d10d1">What happens to the $89 service fee?</label><textarea id="d10d1" data-save rows="1"></textarea>
+            <button type="button" class="reveal-btn" data-reveal>Answer</button>
+            <div class="model"><span class="tag">Answer</span><p>Waived &mdash; across all trades.</p></div></div>
+          <div class="field"><label for="d10d2">What repair discount applies?</label><textarea id="d10d2" data-save rows="1"></textarea>
+            <button type="button" class="reveal-btn" data-reveal>Answer</button>
+            <div class="model"><span class="tag">Answer</span><p>15%.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="d13s13" data-sec="Scenario Lab">
+      <h2><span class="snum">13.13</span> Membership scenario lab</h2>
+
+      <div class="sub">
+        <h3>Scenario 1 &mdash; service fee</h3>
+        <div class="flow"><p style="font-style:italic">&ldquo;I have the full RPP. Why are you charging me $89?&rdquo;</p></div>
+        <div class="write">
+          <div class="field"><label for="d10l1a">What should you verify?</label><textarea id="d10l1a" data-save rows="2"></textarea></div>
+          <div class="field"><label for="d10l1b">How would you explain the difference between RPP and TUC without making the customer feel dismissed?</label><textarea id="d10l1b" data-save rows="3"></textarea></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Scenario 2 &mdash; two systems</h3>
+        <div class="flow"><p>Customer wants heating maintenance. The memo says <strong>RPP + AH</strong>.</p></div>
+        <div class="write">
+          <div class="field"><label for="d10l2a">What should that immediately tell you?</label><textarea id="d10l2a" data-save rows="2"></textarea></div>
+          <div class="field"><label for="d10l2b">What must go into the job summary?</label><textarea id="d10l2b" data-save rows="2"></textarea></div>
+          <div class="field"><label for="d10l2c">Where do you schedule the recurring maintenance from?</label><textarea id="d10l2c" data-save rows="1"></textarea></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Scenario 3 &mdash; partial plan</h3>
+        <div class="flow"><p>Customer has Plumbing Partnership only and needs a leaking faucet repaired.</p></div>
+        <div class="write">
+          <div class="field"><label for="d10l3a">Does the $89 service fee apply?</label><textarea id="d10l3a" data-save rows="1"></textarea></div>
+          <div class="field"><label for="d10l3b">What repair discount applies?</label><textarea id="d10l3b" data-save rows="1"></textarea></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Scenario 4 &mdash; cancellation</h3>
+        <div class="flow"><p>Full RPP customer says the plan is too much and wants to cancel.</p></div>
+        <div class="write">
+          <div class="field"><label for="d10l4a">What save option should you offer?</label><textarea id="d10l4a" data-save rows="1"></textarea></div>
+          <div class="field"><label for="d10l4b">Where must the cancellation reason be documented?</label><textarea id="d10l4b" data-save rows="2"></textarea></div>
+          <div class="field"><label for="d10l4c">What follow-up is sent?</label><textarea id="d10l4c" data-save rows="1"></textarea></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Scenario 5 &mdash; new customer</h3>
+        <div class="flow"><p>New customer needs an electrician and objects to the $89 service fee.</p></div>
+        <div class="write">
+          <div class="field"><label for="d10l5a">Which membership is the simplest bridge?</label><textarea id="d10l5a" data-save rows="1"></textarea></div>
+          <div class="field"><label for="d10l5b">Give your natural TUC response.</label><textarea id="d10l5b" data-save rows="3"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="d13s14" data-sec="Day 13 Final Audit">
+      <h2><span class="snum">13.14</span> Day Thirteen final audit</h2>
       <ul class="checks">
         <li><label class="chk strong"><input type="checkbox" data-save><span>I read the memo before booking, every time</span></label></li>
         <li><label class="chk strong"><input type="checkbox" data-save><span>I booked from the Membership tab &rsaquo; Recurring Service Event, never the main call screen</span></label></li>
@@ -5890,6 +6086,35 @@ td.mark{text-align:center; width:3.4rem}
     }, { rootMargin: "-72px 0px -68% 0px", threshold: 0 });
     ch.querySelectorAll(".sec[data-sec]").forEach(function(s){ obs.observe(s); });
   }
+
+
+  /* ---------- meet-your-team slideshow ---------- */
+  document.querySelectorAll("[data-team]").forEach(function(w){
+    var slides = Array.prototype.slice.call(w.querySelectorAll("[data-team-slide]"));
+    var dots = w.querySelector("[data-team-dots]");
+    if (!slides.length) return;
+    var at = 0;
+    /* a photo that has not been added yet just falls back to the initial */
+    w.querySelectorAll("[data-team-img]").forEach(function(img){
+      img.addEventListener("error", function(){ img.remove(); });
+    });
+    slides.forEach(function(_, i){
+      var d = document.createElement("i");
+      d.addEventListener("click", function(){ at = i; paint(); });
+      dots.appendChild(d);
+    });
+    function paint(){
+      slides.forEach(function(s, i){ s.classList.toggle("on", i === at); });
+      [].forEach.call(dots.children, function(d, i){ d.classList.toggle("on", i === at); });
+    }
+    w.querySelector("[data-team-prev]").addEventListener("click", function(){
+      at = (at - 1 + slides.length) % slides.length; paint();
+    });
+    w.querySelector("[data-team-next]").addEventListener("click", function(){
+      at = (at + 1) % slides.length; paint();
+    });
+    paint();
+  });
 
   /* ---------- drill scoring ----------
      The graded exercises used to grade themselves on screen and record nothing.
