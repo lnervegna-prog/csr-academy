@@ -6098,11 +6098,17 @@ td.mark{text-align:center; width:3.4rem}
        into assets/team/ and whichever one exists is the one that shows. If
        none do, the img removes itself and the initial behind it shows. */
     var PHOTO_EXT = ["webp", "jpg", "jpeg", "png"];
+    /* The cache-buster matters. netlify.toml caches /assets/* for five
+       minutes, and that applies to the 404 for a photo that does not exist
+       yet — so the browser keeps saying "no such file" for minutes after one
+       is actually added. These are a couple of kilobytes each; skipping the
+       cache costs nothing and means a new photo shows up immediately. */
+    var PHOTO_V = Date.now();
     w.querySelectorAll("[data-team-img]").forEach(function(img){
       var tried = 0;
       function next(){
         if (tried >= PHOTO_EXT.length){ img.remove(); return; }
-        img.src = "assets/team/" + img.dataset.photo + "." + PHOTO_EXT[tried++];
+        img.src = "assets/team/" + img.dataset.photo + "." + PHOTO_EXT[tried++] + "?v=" + PHOTO_V;
       }
       img.addEventListener("error", next);
       next();
