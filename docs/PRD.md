@@ -15,7 +15,7 @@ call center reps, in three weeks:
 | Week | Days | What it covers |
 |---|---|---|
 | **One — Foundation** | 1–5 | Culture and values · the Golden Call Flow plus the $89 fee and memberships, split morning/afternoon either side of lunch · ServiceTitan and first live-call shadowing · empathy and de-escalation · memberships in depth, then the live-call gate |
-| **Two — Trades & Products** | 6–10 | First solo ServiceTitan build, then HVAC · plumbing · electrical · sales, rebates, OBR and permits · mastering the call |
+| **Two — Trades & Products** | 6–10 | HVAC · plumbing · electrical · sales, rebates, OBR and permits, with an opening shift on Netic, chat, email and texts · mastering the call |
 | **Three — Application** | 11–13 | Ten live scenarios and first NEXT builds · documentation accuracy · membership maintenance builds and the membership lifecycle |
 
 It exists as an interactive HTML book that saves answers in whatever browser the
