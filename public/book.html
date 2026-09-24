@@ -273,6 +273,11 @@ button{font:inherit; color:inherit; cursor:pointer}
 .tick li::before{content:""; margin-top:.55em; width:.42rem; height:.42rem; border-radius:50%; background:var(--cyan)}
 .tick.warnlist li::before{background:var(--orange)}
 .hintline{font-family:var(--sans); font-size:.84rem; color:var(--ink-soft); margin:.9rem 0 0}
+/* Photo-study questions: the picture is the question. */
+.mcq-photo{display:block; width:100%; max-width:22rem; height:auto; margin:0 0 .7rem;
+           border-radius:9px; border:1px solid var(--rule); background:var(--card)}
+@media print{ .mcq-photo{max-width:14rem} }
+
 /* Meet-your-team slideshow. Photos live in assets/team/<name>.jpg; until one
    exists the initial shows instead, so the page is never broken by a missing
    file. */
@@ -2397,8 +2402,127 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d6s3" data-sec="The Boiler Curveball">
-      <h2><span class="snum">6.3</span> The boiler / water heater / combi curveball</h2>
+    <section class="sec" id="d6s3" data-sec="Photo Study — Name It">
+      <h2><span class="snum">6.3</span> Photo study &mdash; name it</h2>
+      <div class="flow">
+        <p class="lede">A customer sends a picture, or describes &ldquo;the thing in my basement.&rdquo; You need to know what you are looking at before you can ask the right questions or send the right technician.</p>
+        <p>Answer first, then check. The explanation after each one is the tell &mdash; the detail that gives it away on a real call.</p>
+      </div>
+
+      <div class="widget" data-mcq data-mcq-id="d6photo">
+        <header><b>What am I looking at?</b><span class="hint">One answer each</span></header>
+        <div class="in">
+          <div class="mcq">
+
+            <div class="mcq-q" data-answer="B">
+              <div class="stem">
+                <img class="mcq-photo" src="assets/hvac/furnace.jpg" alt="Beige cabinet in a garage with white PVC pipes and sheet-metal ductwork">
+                What is this?
+              </div>
+              <div class="mcq-opts">
+                <button type="button" class="opt" data-val="A" aria-pressed="false"><b>A</b><span>Air handler</span></button>
+                <button type="button" class="opt" data-val="B" aria-pressed="false"><b>B</b><span>Furnace</span></button>
+                <button type="button" class="opt" data-val="C" aria-pressed="false"><b>C</b><span>Boiler</span></button>
+                <button type="button" class="opt" data-val="D" aria-pressed="false"><b>D</b><span>Water heater</span></button>
+              </div>
+              <div class="why"><b>Why</b>A furnace burns fuel and blows <em>hot air</em> through ductwork &mdash; note the big sheet-metal plenum beside it. The white PVC pipes mean high-efficiency, which is why it vents out a wall rather than up a chimney.</div>
+            </div>
+
+            <div class="mcq-q" data-answer="C">
+              <div class="stem">
+                <img class="mcq-photo" src="assets/hvac/boiler.jpg" alt="Floor-standing white unit with a red expansion tank, flue and a radiator beside it">
+                What is this?
+              </div>
+              <div class="mcq-opts">
+                <button type="button" class="opt" data-val="A" aria-pressed="false"><b>A</b><span>Furnace</span></button>
+                <button type="button" class="opt" data-val="B" aria-pressed="false"><b>B</b><span>Air handler</span></button>
+                <button type="button" class="opt" data-val="C" aria-pressed="false"><b>C</b><span>Boiler</span></button>
+                <button type="button" class="opt" data-val="D" aria-pressed="false"><b>D</b><span>Condenser</span></button>
+              </div>
+              <div class="why"><b>Why</b>A boiler heats <em>water</em>, not air. The giveaways: pipes rather than ducts, a red expansion tank, a pressure gauge, and a radiator in the room. If a customer says &ldquo;radiators&rdquo; or &ldquo;baseboard,&rdquo; you are on a boiler call.</div>
+            </div>
+
+            <div class="mcq-q" data-answer="A">
+              <div class="stem">
+                <img class="mcq-photo" src="assets/hvac/combi.jpg" alt="White wall-hung unit with a small display and copper pipes running below it">
+                What is this?
+              </div>
+              <div class="mcq-opts">
+                <button type="button" class="opt" data-val="A" aria-pressed="false"><b>A</b><span>Combi boiler</span></button>
+                <button type="button" class="opt" data-val="B" aria-pressed="false"><b>B</b><span>Tankless water heater</span></button>
+                <button type="button" class="opt" data-val="C" aria-pressed="false"><b>C</b><span>Air handler</span></button>
+                <button type="button" class="opt" data-val="D" aria-pressed="false"><b>D</b><span>Mini split indoor head</span></button>
+              </div>
+              <div class="why"><b>Why</b>This is the one that catches people. A combi boiler does <strong>both</strong> heat and domestic hot water from one wall-hung box, which is exactly why it looks like a tankless water heater. The tell is the number of pipes underneath &mdash; a combi has heating flow and return <em>plus</em> hot and cold water. When in doubt, ask whether it also runs their radiators.</div>
+            </div>
+
+            <div class="mcq-q" data-answer="B">
+              <div class="stem">
+                <img class="mcq-photo" src="assets/hvac/airhandler.jpg" alt="Tall dark indoor cabinet with two access panels and copper line connections">
+                What is this?
+              </div>
+              <div class="mcq-opts">
+                <button type="button" class="opt" data-val="A" aria-pressed="false"><b>A</b><span>Furnace</span></button>
+                <button type="button" class="opt" data-val="B" aria-pressed="false"><b>B</b><span>Air handler</span></button>
+                <button type="button" class="opt" data-val="C" aria-pressed="false"><b>C</b><span>Boiler</span></button>
+                <button type="button" class="opt" data-val="D" aria-pressed="false"><b>D</b><span>Condenser</span></button>
+              </div>
+              <div class="why"><b>Why</b>An air handler moves air but burns nothing &mdash; no gas line, no flue. It pairs with a heat pump or an AC condenser outside. If there is no combustion and no chimney, you are looking at an air handler rather than a furnace.</div>
+            </div>
+
+            <div class="mcq-q" data-answer="C">
+              <div class="stem">
+                <img class="mcq-photo" src="assets/hvac/condenser.jpg" alt="Grey outdoor unit on a pad with a large fan facing upward">
+                What is this?
+              </div>
+              <div class="mcq-opts">
+                <button type="button" class="opt" data-val="A" aria-pressed="false"><b>A</b><span>Air handler</span></button>
+                <button type="button" class="opt" data-val="B" aria-pressed="false"><b>B</b><span>Furnace</span></button>
+                <button type="button" class="opt" data-val="C" aria-pressed="false"><b>C</b><span>Outdoor condenser</span></button>
+                <button type="button" class="opt" data-val="D" aria-pressed="false"><b>D</b><span>Combi boiler</span></button>
+              </div>
+              <div class="why"><b>Why</b>The outdoor half of a split system, with the fan blowing straight up. This is what customers mean by &ldquo;the unit outside&rdquo; or &ldquo;the AC.&rdquo; Ice on the lines, no fan spinning, or loud noises out here are all AC calls.</div>
+            </div>
+
+            <div class="mcq-q" data-answer="B">
+              <div class="stem">
+                <img class="mcq-photo" src="assets/hvac/minisplit.jpg" alt="White unit mounted high on an interior wall near a window">
+                What is this?
+              </div>
+              <div class="mcq-opts">
+                <button type="button" class="opt" data-val="A" aria-pressed="false"><b>A</b><span>Air purifier</span></button>
+                <button type="button" class="opt" data-val="B" aria-pressed="false"><b>B</b><span>Mini split indoor head</span></button>
+                <button type="button" class="opt" data-val="C" aria-pressed="false"><b>C</b><span>Air handler</span></button>
+                <button type="button" class="opt" data-val="D" aria-pressed="false"><b>D</b><span>Return air grille</span></button>
+              </div>
+              <div class="why"><b>Why</b>Mounted high on the wall, no ductwork, one head per room. Ask how many heads they have &mdash; a four-head system is a very different visit from a single head, and it changes what the technician brings.</div>
+            </div>
+
+          </div>
+          <div class="wid-foot">
+            <button type="button" class="btn primary" data-mcq-check>Check my answers</button>
+            <button type="button" class="btn ghost" data-mcq-reset>Try again</button>
+            <span class="score" data-mcq-score></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="banner warn">
+        <span class="tag">On a real call</span>
+        <p>You are not diagnosing. You are working out <em>which trade and which technician</em>, and asking questions that make sense for what they have. Calling a boiler a furnace in the job summary sends the wrong person with the wrong parts.</p>
+      </div>
+
+      <div class="sub">
+        <h3>Where you got stuck</h3>
+        <div class="write">
+          <div class="field"><label for="d6ph1"><span class="qn">01</span>Which two were hardest to tell apart, and what will you look for next time?</label><textarea id="d6ph1" data-save rows="3"></textarea></div>
+          <div class="field"><label for="d6ph2"><span class="qn">02</span>What question could you ask a customer to work out which one they have, without asking them to go and look?</label><textarea id="d6ph2" data-save rows="3"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="d6s4" data-sec="The Boiler Curveball">
+      <h2><span class="snum">6.4</span> The boiler / water heater / combi curveball</h2>
       <aside class="note rule">
         <span class="tag">Never assume</span>
         <p>Customers do not use our terminology. Never book based only on the equipment name the customer gives you.</p>
@@ -2428,8 +2552,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d6s4" data-sec="Ask It — Every HVAC Call">
-      <h2><span class="snum">6.4</span> Ask it &mdash; every HVAC call</h2>
+    <section class="sec" id="d6s5" data-sec="Ask It — Every HVAC Call">
+      <h2><span class="snum">6.5</span> Ask it &mdash; every HVAC call</h2>
       <ul class="checks">
         <li><label class="chk"><input type="checkbox" data-save><span>Approximately how old is your system?</span></label></li>
         <li><label class="chk"><input type="checkbox" data-save><span>How many HVAC systems/units do you have in the home?</span></label></li>
@@ -2461,8 +2585,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d6s5" data-sec="Service or Maintenance?">
-      <h2><span class="snum">6.5</span> Service or maintenance?</h2>
+    <section class="sec" id="d6s6" data-sec="Service or Maintenance?">
+      <h2><span class="snum">6.6</span> Service or maintenance?</h2>
       <div class="flow"><p>Maintenance is for routine care on equipment that is operating normally. If the customer reports that something is wrong, book a <strong>service</strong> call.</p></div>
       <div class="widget" data-sorter data-sorter-id="d6sort">
         <header><b>Sort the call</b><span class="hint">Service or maintenance?</span></header>
@@ -2488,8 +2612,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d6s6" data-sec="Know Your Boundary">
-      <h2><span class="snum">6.6</span> Know your boundary &mdash; CSR vs. technician</h2>
+    <section class="sec" id="d6s7" data-sec="Know Your Boundary">
+      <h2><span class="snum">6.7</span> Know your boundary &mdash; CSR vs. technician</h2>
       <div class="sub">
         <h3>A CSR can</h3>
         <ul class="checks">
@@ -2517,8 +2641,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d6s7" data-sec="Hear It — Opportunities">
-      <h2><span class="snum">6.7</span> Hear it &mdash; recognizing HVAC opportunities</h2>
+    <section class="sec" id="d6s8" data-sec="Hear It — Opportunities">
+      <h2><span class="snum">6.8</span> Hear it &mdash; recognizing HVAC opportunities</h2>
       <div class="flow"><p>System age is not just another question. It helps us recognize when an older system &mdash; especially one with no heat &mdash; may be a strong opportunity for a Comfort Advisor / new-system conversation.</p></div>
       <div class="tbl-wrap">
         <table>
@@ -2536,8 +2660,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d6s8" data-sec="Tech Talk → Customer Talk">
-      <h2><span class="snum">6.8</span> Tech talk &rarr; customer talk</h2>
+    <section class="sec" id="d6s9" data-sec="Tech Talk → Customer Talk">
+      <h2><span class="snum">6.9</span> Tech talk &rarr; customer talk</h2>
       <div class="widget">
         <header><b>What are they describing?</b><span class="hint">Answer first, then reveal</span></header>
         <div class="in">
@@ -2562,8 +2686,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d6s9" data-sec="Book It — Scenario Lab">
-      <h2><span class="snum">6.9</span> Book it &mdash; HVAC scenario lab</h2>
+    <section class="sec" id="d6s10" data-sec="Book It — Scenario Lab">
+      <h2><span class="snum">6.10</span> Book it &mdash; HVAC scenario lab</h2>
       <div class="sub">
         <h3>Scenario 1 &mdash; no heat opportunity</h3>
         <div class="flow"><p>Customer has a 17-year-old gas furnace, no heat, forced air, and Service Professionals did not install it.</p></div>
@@ -2600,8 +2724,8 @@ td.mark{text-align:center; width:3.4rem}
       </div>
     </section>
 
-    <section class="sec" id="d6s10" data-sec="Day 6 Challenge">
-      <h2><span class="snum">6.10</span> Day Six HVAC challenge</h2>
+    <section class="sec" id="d6s11" data-sec="Day 6 Challenge">
+      <h2><span class="snum">6.11</span> Day Six HVAC challenge</h2>
       <div class="write">
         <div class="field"><label for="d6c1"><span class="qn">01</span>What is the easiest customer-facing difference between a furnace and a traditional boiler?</label><textarea id="d6c1" data-save rows="2"></textarea>
           <button type="button" class="reveal-btn" data-reveal>Answer</button><div class="model"><span class="tag">Answer</span><p>A furnace delivers warm air through vents and registers. A boiler delivers heat through baseboards or radiators.</p></div></div>
