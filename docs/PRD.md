@@ -370,6 +370,7 @@ Resolved since the first draft:
 - ~~Drill scores not persisted~~ — built, four kinds, every attempt kept.
 - ~~Role and cohort changes need the SQL editor~~ — People tab built.
 - ~~Job-number capture (O3)~~ — Day 9.14 NEXT Build Lab: ten scenarios, each with a pasted ServiceTitan job URL that renders an Open job button for the trainer, plus what the rep quoted.
+- ~~Z-line / trade line names (O4)~~ — Z1 HVAC, Z2 Plumbing, Z3 Electric, Z-SALES. Day 13.6 is now a printed reference rather than fillable blanks; Day 9.14 names all four in the lab banner.
 
 Still open:
 
@@ -377,7 +378,6 @@ Still open:
 |---|---|---|
 | O1 | **Every Supabase path is untested** | No project exists yet. Auth, sync, dashboard queries and drill writes are written but unproven. Expect breakage on first run. This is the single biggest risk in the plan. |
 | O2 | Per-day assignment (F4) | New table, manager UI, rep-side "reassigned" indicator. |
-| O4 | Z-line / trade line names | Day 13's trade reference table has fillable blanks pending the real line names. Day 9.14 also tells reps to "assign the job to the correct z-line" without naming them. |
 | O5 | Open / cancel membership click paths | Day 13 has these as write-in steps for a manager-led demo. Comp-months steps are written exactly. |
 | O6 | Answer-key stability | See F8. Revisit before the second cohort. |
 
