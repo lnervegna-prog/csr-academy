@@ -369,7 +369,7 @@ Resolved since the first draft:
 - ~~OAuth response shape unconfirmed~~ — both implicit and PKCE handled.
 - ~~Drill scores not persisted~~ — built, four kinds, every attempt kept.
 - ~~Role and cohort changes need the SQL editor~~ — People tab built.
-- ~~Job-number capture (O3)~~ — Day 9.14 NEXT Build Lab: ten scenarios, each with a pasted ServiceTitan job URL that renders an Open job button for the trainer, plus what the rep quoted.
+- ~~Job-number capture (O3)~~ — the NEXT build lab: ten scenarios, each with a pasted ServiceTitan job URL that renders an Open job button for the trainer, plus what the rep quoted. Run twice — Day 5.2 as a week-one baseline and Day 10.2 as the same ten again, so growth is measurable against the rep's own first attempt.
 - ~~Z-line / trade line names (O4)~~ — Z1 HVAC, Z2 Plumbing, Z3 Electric, Z-SALES. Day 13.6 is now a printed reference rather than fillable blanks; Day 9.14 names all four in the lab banner.
 
 Still open:
